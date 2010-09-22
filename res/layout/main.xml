@@ -4,11 +4,11 @@
     android:layout_height="fill_parent"
     android:background="#6a6a6a">
 
-	<ImageView
-		android:id="@+id/TrommelydButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/trommebutton"
-		android:layout_centerInParent="true"
-		android:clickable="true" />
+    <ImageView
+        android:id="@+id/TrommelydButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/trommebutton"
+        android:layout_centerInParent="true"
+        android:clickable="true" />
 </RelativeLayout>
