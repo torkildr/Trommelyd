@@ -149,19 +149,19 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         InputStream is = context.getResources().openRawResource(resource);
         BufferedReader br = new BufferedReader(new InputStreamReader(is), 1024);
         
-        String content = "";
+        StringBuffer content = new StringBuffer();
 
         try {
             String readLine = null;
 
             while ((readLine = br.readLine()) != null) {
-                content += readLine;
+                content.append(readLine);
             }
         } catch (IOException e) {
-            content = "Oops..";
+            return "Oops..";
         }
 
-        return content;
+        return content.toString();
     }
 
 }
