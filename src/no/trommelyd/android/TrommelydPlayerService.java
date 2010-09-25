@@ -1,12 +1,9 @@
 package no.trommelyd.android;
 
-import java.io.IOException;
-
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -17,10 +14,16 @@ import android.widget.Toast;
  * 
  * @author torkildr
  */
-public class TrommelydPlayerService extends Service implements OnCompletionListener, OnPreparedListener {
+public class TrommelydPlayerService extends Service implements OnCompletionListener {
 
     private MediaPlayer mPlayer;
-
+    
+    // Minimum time to play sound in ms
+    private final int MIN_PLAY_TIME = 500;
+    
+    // Sound file
+    private final int resource = R.raw.trommelyd;
+    
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
 
@@ -32,9 +35,13 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
     
     // For some reason, we want to create the media player
     private synchronized boolean createMediaPlayer() {
-        if (mPlayer == null) {
-            mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.trommelyd);
+        if (mPlayer != null) {
+            mPlayer.release();
         }
+        
+        // Create player and bind completion listener
+        mPlayer = MediaPlayer.create(this, resource);
+        mPlayer.setOnCompletionListener(this);
         
         return (mPlayer != null);
     }
@@ -49,10 +56,10 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
             return;
         }
 
-        // Either restart to start playing media (we restart so that we don't
-        // get a bunch of queued plays that will go on forever)
+        // Either restart or start
         if (mPlayer.isPlaying()) {
-            mPlayer.seekTo(0);
+            if (mPlayer.getCurrentPosition() > MIN_PLAY_TIME)
+                mPlayer.seekTo(0);
         } else {
             mPlayer.start();
         }
@@ -61,23 +68,9 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
     // Prepare next play when completed
     @Override
     public synchronized void onCompletion(MediaPlayer player) {
-        player.stop();
-        
-        // This will block (and since we're in a synch'ed method, this is 'good')
-        try {
-            player.prepare();
-        } catch (IOException e) {
-            // meh
-            return;
-        }
+        createMediaPlayer();
     }
-
-    // Finished preparing, seek to start of file
-    @Override
-    public void onPrepared(MediaPlayer player) {
-        player.seekTo(0);
-    }
-    
+   
     // Service is created, prepare media player
     @Override
     public void onCreate() {
@@ -85,18 +78,13 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
         if (!createMediaPlayer()) {
             return;
         }
-
-        // When playback is complete, prepare for next play
-        mPlayer.setOnCompletionListener(this);
-        
-        // When media is prepared, make sure position is correct
-        mPlayer.setOnPreparedListener(this);
     }
     
     // Service is destroyed, attempt to clean up...
     @Override
     public void onDestroy() {
         mPlayer.release();
+        mPlayer = null;
     }
 
     // Getting a start command, for now, support only play instruction

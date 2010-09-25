@@ -1,10 +1,12 @@
-Copyright © Torkild Retvedt\n
-\n
-This software is Licensed under GPLv3\n
-\n
-The "Trommelyd"-sound is created by Simon Lacelle, and is licensed under\n
-Creative Commons Sampling Plus 1.0\n
-\n
-Complete source code and additional licensing information can be found on http://app.trommelyd.no/\n
-\n
-For questions or bug reports, please fire up an email to contact@trommelyd.no
+Created by Torkild Retvedt
+
+This software is licensed under GPLv3.
+
+The "Trommelyd"-sound is created by Simon Lacelle, and is licensed under
+Creative Commons Sampling Plus 1.0.
+
+Information on how you can obtain the complete source code can be found on:
+http://app.trommelyd.no/
+
+For questions or bug reports, please send an email to:
+contact@trommelyd.no

@@ -6,14 +6,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,35 +67,43 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         
         // Load main layout
         setContentView(R.layout.main);
-        
+
         // Button to trigger event
         View mButton = findViewById(R.id.TrommelydButton);
 
-        // Intent to hold the service that will play the actual sound
-        Intent mPlayerIntent = new Intent(this, TrommelydPlayerService.class);
-
-        // We try to bind the player service
-        if (!bindService(mPlayerIntent, this, BIND_AUTO_CREATE)) {
-            Toast.makeText(getApplicationContext(),
-                    "Ba-dom-tschhh (sorry, no sound)", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
         // Tell the button to bother someone else when clicked.. (also, how to bother them)
         if (mButton != null) {
             mButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mBoundService == null) {
+                        Toast.makeText(getApplicationContext(),
+                                "Ba-dom-tschhh (sorry, no sound)", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
                     mBoundService.playSound();
                 }
             });
         }
     }
+
+    // Bind to service
+    @Override
+    protected void onStart() {
+        super.onStart();
+        
+        // Intent to hold the service that will play the actual sound
+        Intent mPlayerIntent = new Intent(this, TrommelydPlayerService.class);
+
+        // We try to bind the player service
+        bindService(mPlayerIntent, this, BIND_AUTO_CREATE);
+    }
     
     // Clean up
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
 
         // Removes binding to local service
         unbindService(this);
@@ -108,10 +122,11 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.about:
-            return showDialog(DIALOG_ABOUT, null);
+            showDialog(DIALOG_ABOUT);
+            return true;
             
         case R.id.quit:
-            // TODO: We would probably want to unbind the service here as well
+            // This won't actually do much, but onStop() will be called
             return moveTaskToBack(true);
         
         default:
@@ -126,15 +141,34 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         
         switch(id) {
         case DIALOG_ABOUT:
-            // Make dialog, set view and title
-            dialog = new Dialog(this);
-            dialog.setContentView(R.layout.custom_dialog);
-            dialog.setTitle(R.string.menu_about);
+            // Use alert dialog, because we can do a bunch of stuff with it
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            // Inflate layout
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.custom_dialog, null);
             
-            // Fill text
-            TextView text = (TextView) dialog.findViewById(R.id.custom_dialog_text);
-            text.setText(readFile(this, R.raw.about));
-            
+            // Set title and view
+            builder.setTitle(R.string.menu_about);
+            builder.setView(layout);
+
+            // Grab text and linkify it
+            SpannableString text = new SpannableString(readFile(this, R.raw.about));
+            Linkify.addLinks(text, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
+
+            // Place text and make it clickable
+            TextView textView = (TextView) layout.findViewById(R.id.custom_dialog_text);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            textView.setText(text);
+
+            // Button
+            builder.setNegativeButton(R.string.menu_close, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            dialog = builder.create();
             break;
         default:
            dialog = null;
@@ -144,7 +178,6 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     }
     
     // Helper method for reading file contents from resource
-    // TODO: Make this shiny
     private String readFile(Context context, int resource) {
         InputStream is = context.getResources().openRawResource(resource);
         BufferedReader br = new BufferedReader(new InputStreamReader(is), 1024);
@@ -152,11 +185,15 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         StringBuffer content = new StringBuffer();
 
         try {
-            String readLine = null;
+            char[] buffer = new char[256];
 
-            while ((readLine = br.readLine()) != null) {
-                content.append(readLine);
+            int size;
+
+            // Need this instead of readLine (we need those \n's!!)
+            while ((size = br.read(buffer)) != -1) {
+                content.append(buffer, 0, size);
             }
+            
         } catch (IOException e) {
             return "Oops..";
         }
