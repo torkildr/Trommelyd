@@ -67,7 +67,7 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
 
     // Prepare next play when completed
     @Override
-    public synchronized void onCompletion(MediaPlayer player) {
+    public void onCompletion(MediaPlayer player) {
         createMediaPlayer();
     }
    

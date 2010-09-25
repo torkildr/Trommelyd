@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,9 +57,6 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Remove title bar (TODO: move to xml?)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // Volume control should adjust media volume
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
