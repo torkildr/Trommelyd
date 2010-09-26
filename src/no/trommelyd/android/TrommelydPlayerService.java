@@ -18,6 +18,9 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
 
     private MediaPlayer mPlayer;
     
+    // Service actions
+    public static final String ACTION_PLAY = "play";
+    
     // Minimum time to play sound in ms
     private final int MIN_PLAY_TIME = 500;
     
@@ -87,13 +90,24 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
         mPlayer = null;
     }
 
-    // Getting a start command, for now, support only play instruction
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    // Handle commands, for now only play
+    private void handleCommand(Intent intent) {
         // Someone stuffed this in the intent, obay!
-        if (intent.getExtras().getBoolean("play")) {
+        if (intent.getAction().equals(ACTION_PLAY)) {
             playSound();
         }
+    }
+    
+    // Backwards compatibility for API < 5
+    @Override
+    public void onStart(Intent intent, int startId) {
+        handleCommand(intent);
+    }
+    
+    // Used for API >= 5
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        handleCommand(intent);
         
         // Throw away when killed
         return Service.START_NOT_STICKY;

@@ -19,7 +19,7 @@ public class TrommelydWidgetProvider extends AppWidgetProvider {
         Intent mPlayerIntent = new Intent(context, TrommelydPlayerService.class);
 
         // Information to the service about what the intent is intended (ba-dom-tshh) to do
-        mPlayerIntent.putExtra("play", true);
+        mPlayerIntent.setAction(TrommelydPlayerService.ACTION_PLAY);
 
         // Make a pending intent targeted at our local service
         PendingIntent mPendingPlayerIntent = PendingIntent.getService(context, 0, mPlayerIntent,
