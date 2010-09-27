@@ -13,7 +13,7 @@ public class TrommelydWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // View to base widget on, buttons will be here
-        RemoteViews mViews = new RemoteViews(context.getPackageName(), R.layout.trommelyd_widget);
+        RemoteViews mViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
         // Intent to hold the service that will play the actual sound
         Intent mPlayerIntent = new Intent(context, TrommelydPlayerService.class);

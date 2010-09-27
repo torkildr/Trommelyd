@@ -4,10 +4,10 @@
     <string name="app_name">Trommelyd</string>
     <string name="sound_error">Ba-dom-tschh (sorry, didn\'t work)</string>
 
-    <string name="menu_about">About</string>
-    <string name="menu_close">Close</string>
-    <string name="menu_help">Help</string>
-    <string name="menu_preferences">Preferences</string>
-    <string name="menu_quit">Exit</string>
+    <string name="about">About</string>
+    <string name="close">Close</string>
+    <string name="help">Help</string>
+    <string name="preferences">Preferences</string>
+    <string name="quit">Exit</string>
     
 </resources>

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.prefs.Preferences;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,9 +14,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -57,7 +61,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        
         // Volume control should adjust media volume
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
@@ -82,6 +88,16 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                 }
             });
         }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String text = sharedPref.getString("edittext_preference", "");
+
+        Toast.makeText(this, "Text is: " + text, Toast.LENGTH_SHORT).show();
     }
 
     // Bind to service
@@ -109,7 +125,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.trommelyd_menu, menu);
+        inflater.inflate(R.menu.menu, menu);
         return true;
     }
     
@@ -119,6 +135,11 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         switch (item.getItemId()) {
         case R.id.about:
             showDialog(DIALOG_ABOUT);
+            return true;
+            
+        case R.id.preferences:
+            Intent intent = new Intent(getBaseContext(), TrommelydPreferences.class);
+            startActivity(intent);
             return true;
             
         case R.id.quit:
@@ -145,7 +166,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             View layout = inflater.inflate(R.layout.custom_dialog, null);
             
             // Set title and view
-            builder.setTitle(R.string.menu_about);
+            builder.setTitle(R.string.about);
             builder.setView(layout);
 
             // Grab text and linkify it
@@ -158,7 +179,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             textView.setText(text);
 
             // Button
-            builder.setNegativeButton(R.string.menu_close, new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
                 }

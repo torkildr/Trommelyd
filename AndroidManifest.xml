@@ -4,21 +4,36 @@
 	android:installLocation="auto" android:versionCode="5">
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
+	
+	    <!-- Activities -->
+	
 		<activity android:name=".TrommelydActivity" android:label="@string/app_name" android:theme="@style/MainStyle">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		
+		<activity android:name=".TrommelydPreferences" android:label="@string/preferences"> 
+		    <intent-filter>
+		        <category android:name="android.intent.category.PREFERENCE" />
+		    </intent-filter>
+		</activity>
+
+		<!-- Receivers -->
+		
 		<receiver android:name=".TrommelydWidgetProvider"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/trommelyd_widget" />
+				android:resource="@xml/widget" />
 		</receiver>
+		
+		<!-- Services -->
         <service android:name=".TrommelydPlayerService" />
+        
     </application>
 
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8" />
