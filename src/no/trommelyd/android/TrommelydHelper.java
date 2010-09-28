@@ -100,7 +100,7 @@ public class TrommelydHelper {
         return content.toString();
     }
     
-    // Get version number from manifest
+    // Get version number from manifest/package info
     public static String getVersionNumber(Context context) {
         try {
             String pkg = context.getPackageName();

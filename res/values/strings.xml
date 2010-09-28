@@ -25,16 +25,18 @@
 
     <string name="sound_error">Ba-dom-tschh (sorry, didn\'t work)</string>
     <string name="first_run">Now what?</string>
+    <string name="url">http://app.trommelyd.no/</string>
 
     <string name="about">About</string>
     <string name="close">Close</string>
     <string name="help">Help</string>
     <string name="preferences">Preferences</string>
     <string name="quit">Exit</string>
+    <string name="info">Info</string>
     
     <string name="preference_category">Trommelyd Preferences</string>
-    <string name="preference_startup_title">Sound at startup</string>
-    <string name="preference_startup_text">Play the "Trommelyd" sound when at application start</string>
+    <string name="preference_startup_title">Sound on focus</string>
+    <string name="preference_startup_text">Play the "Trommelyd" sound when application gets focus</string>
     <string name="preference_repeat_title">Repeatable sound</string>
     <string name="preference_repeat_text">If checked, sound can be restarted before it is completed</string>
     <string name="preference_muted_title">Play when muted</string>

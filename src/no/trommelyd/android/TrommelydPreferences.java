@@ -29,7 +29,7 @@ import android.preference.PreferenceScreen;
  */
 
 /**
- * Activity for saving preferences
+ * Activity for saving preferences, also some info...
  * 
  * @author torkildr
  */
@@ -43,15 +43,19 @@ public class TrommelydPreferences extends PreferenceActivity {
 
         // New category
         PreferenceCategory infoCategory = new PreferenceCategory(this);
-        infoCategory.setTitle("Info");
+        infoCategory.setTitle(R.string.info);
+
         getPreferenceScreen().addPreference(infoCategory);
         
         // Insert extra preference with dynamic information
         PreferenceScreen intentPref = getPreferenceManager().createPreferenceScreen(this);
-        intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
-                .setData(Uri.parse("http://app.trommelyd.no/")));
+        infoCategory.addPreference(intentPref);
         
-        // Version
+        // Intent for preference, open web page
+        intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
+                .setData(Uri.parse(getText(R.string.url).toString())));
+        
+        // Version name
         String version = TrommelydHelper.getVersionNumber(this);
         intentPref.setTitle(getString(R.string.app_name) + 
                 ((version.length() > 0) ? " v" + version : ""));
@@ -59,8 +63,8 @@ public class TrommelydPreferences extends PreferenceActivity {
         // Number of plays
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         int count = sharedPref.getInt("count", 0);
-        intentPref.setSummary("Sound played " + count + " time" + ((count > 1) ? "s" : ""));
-        infoCategory.addPreference(intentPref);
+        intentPref.setSummary("Sound played " + count + " time" +
+                ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
     }
     
 }
