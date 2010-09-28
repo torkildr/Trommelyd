@@ -27,7 +27,7 @@
         android:id="@+id/TrommelydWidgetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/widget_icon"
+        android:src="@drawable/trommebutton"
         android:layout_centerInParent="true"
         android:clickable="true" />
 </RelativeLayout>

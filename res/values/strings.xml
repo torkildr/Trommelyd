@@ -24,12 +24,20 @@
     <string name="app_name">Trommelyd</string>
 
     <string name="sound_error">Ba-dom-tschh (sorry, didn\'t work)</string>
-    <string name="first_run">What\'s new:</string>
+    <string name="first_run">Now what?</string>
 
     <string name="about">About</string>
     <string name="close">Close</string>
     <string name="help">Help</string>
     <string name="preferences">Preferences</string>
     <string name="quit">Exit</string>
+    
+    <string name="preference_category">Trommelyd Preferences</string>
+    <string name="preference_startup_title">Sound at startup</string>
+    <string name="preference_startup_text">Play the "Trommelyd" sound when at application start</string>
+    <string name="preference_repeat_title">Repeatable sound</string>
+    <string name="preference_repeat_text">If checked, sound can be restarted before it is completed</string>
+    <string name="preference_muted_title">Play when muted</string>
+    <string name="preference_muted_text">Play sound when phone is in muted or vibrate mode</string>
     
 </resources>

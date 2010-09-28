@@ -1,11 +1,16 @@
 package no.trommelyd.android;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 /*
@@ -78,13 +83,38 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
             return;
         }
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get audio manager, need this for reading sound state
+        AudioManager manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+
+        // Don't play sound if we've asked for it and it's not in normal mode
+        if (!sharedPref.getBoolean("muted", true) &&
+                manager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
+            return;
+        }
+        
         // Either restart or start
         if (mPlayer.isPlaying()) {
-            if (mPlayer.getCurrentPosition() > MIN_PLAY_TIME)
-                mPlayer.seekTo(0);
+            // Sound is playing
+            if (mPlayer.getCurrentPosition() > MIN_PLAY_TIME) {
+                // User has opted out
+                if (sharedPref.getBoolean("repeat", true)) {
+                    mPlayer.seekTo(0);
+                } else {
+                    return;
+                }
+            } else {
+                // Ok, ugly with all these returns, but makes counting up below "prettier"
+                return;
+            }
         } else {
+            // Start playing sound
             mPlayer.start();
         }
+
+        int count = sharedPref.getInt("count", 0);
+        sharedPref.edit().putInt("count", count + 1).commit();
     }
 
     // Prepare next play when completed

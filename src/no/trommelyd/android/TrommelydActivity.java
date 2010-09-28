@@ -54,6 +54,12 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         mBoundService = ((TrommelydPlayerService.TrommelydBinder) service).getService();
+        
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPref.getBoolean("startup", false)) {
+            mBoundService.playSound();
+        }
     }
 
     // Remove reference to service
@@ -67,6 +73,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // Set default preferences (only when first encountered)
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         
         // Volume control should adjust media volume
@@ -93,18 +100,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             });
         }
     }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String text = sharedPref.getString("edittext_preference", "");
-
-        Toast.makeText(this, "Text is: " + text, Toast.LENGTH_SHORT).show();
-    }
-
-    // Bind to service
     @Override
     protected void onStart() {
         super.onStart();
@@ -116,6 +112,19 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         bindService(mPlayerIntent, this, BIND_AUTO_CREATE);
     }
     
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Show this on "first" run
+        if (sharedPref.getBoolean("first_run", true)) {
+            showDialog(DIALOG_FIRST_RUN);
+            sharedPref.edit().putBoolean("first_run", false).commit();
+        }
+    }
+
     // Clean up
     @Override
     protected void onStop() {
@@ -169,7 +178,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
         case DIALOG_FIRST_RUN:
             dialog = TrommelydHelper.getAlertDialogFromFile(this,
-                    R.string.first_run, R.raw.first_run, true);
+                    R.string.first_run, R.raw.first_run, false);
             break;
             
         default:

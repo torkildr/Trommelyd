@@ -20,6 +20,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="#808080">
+
     <ImageView
         android:id="@+id/TrommelydButton"
         android:layout_width="wrap_content"
@@ -27,4 +28,5 @@
         android:src="@drawable/trommebutton"
         android:layout_centerInParent="true"
         android:clickable="true" />
+
 </RelativeLayout>
