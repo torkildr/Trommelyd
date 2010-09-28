@@ -1,16 +1,8 @@
 package no.trommelyd.android;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -18,16 +10,11 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /*
@@ -61,6 +48,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     
     // Dialog boxes
     public static final int DIALOG_ABOUT = 1;
+    public static final int DIALOG_FIRST_RUN = 2;
 
     // Get service from binding
     @Override
@@ -172,38 +160,16 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     protected Dialog onCreateDialog(int id) {
         Dialog dialog;
         
-        //
         switch(id) {
         
         case DIALOG_ABOUT:
-            // Use alert dialog, because we can do a bunch of stuff with it
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            dialog = TrommelydHelper.getAlertDialogFromFile(this,
+                    R.string.about, R.raw.about, true);
+            break;
 
-            // Inflate layout
-            LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.custom_dialog, null);
-            
-            // Set title and view
-            builder.setTitle(R.string.about);
-            builder.setView(layout);
-
-            // Grab text and linkify it
-            SpannableString text = new SpannableString(readFile(this, R.raw.about));
-            Linkify.addLinks(text, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
-
-            // Place text and make it clickable
-            TextView textView = (TextView) layout.findViewById(R.id.custom_dialog_text);
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
-            textView.setText(text);
-
-            // Button
-            builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-
-            dialog = builder.create();
+        case DIALOG_FIRST_RUN:
+            dialog = TrommelydHelper.getAlertDialogFromFile(this,
+                    R.string.first_run, R.raw.first_run, true);
             break;
             
         default:
@@ -214,28 +180,4 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         return dialog;
     }
     
-    // Helper method for reading file contents from resource
-    private String readFile(Context context, int resource) {
-        InputStream is = context.getResources().openRawResource(resource);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is), 1024);
-        
-        StringBuffer content = new StringBuffer();
-
-        try {
-            char[] buffer = new char[256];
-
-            int size;
-
-            // Need this instead of readLine (we need those \n's!!)
-            while ((size = br.read(buffer)) != -1) {
-                content.append(buffer, 0, size);
-            }
-            
-        } catch (IOException e) {
-            return "Oops..";
-        }
-
-        return content.toString();
-    }
-
 }

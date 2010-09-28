@@ -22,7 +22,9 @@
 <resources>
     
     <string name="app_name">Trommelyd</string>
+
     <string name="sound_error">Ba-dom-tschh (sorry, didn\'t work)</string>
+    <string name="first_run">What\'s new:</string>
 
     <string name="about">About</string>
     <string name="close">Close</string>
