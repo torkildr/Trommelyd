@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.prefs.Preferences;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +17,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -32,10 +30,29 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+ *    This file is part of Trommelyd for Android.
+ *    Copyright (C) Torkild Retvedt
+ *    http://app.trommelyd.no/
+ *
+ *    Trommelyd for Android is free software: you can redistribute it and/or
+ *    modify it under the terms of the GNU General Public License as published
+ *    by the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    Trommelyd for Android is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ *    Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along
+ *    with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /**
  * Main program window, with proper listener registration.
  * 
- * @author torkildr
+ * @author  
  */
 public class TrommelydActivity extends Activity implements ServiceConnection {
     
@@ -81,10 +98,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                     if (mBoundService == null) {
                         Toast.makeText(getApplicationContext(),
                                 "Ba-dom-tschhh (sorry, no sound)", Toast.LENGTH_SHORT).show();
-                        return;
+                    } else {
+                        mBoundService.playSound();
                     }
-                    
-                    mBoundService.playSound();
                 }
             });
         }
@@ -156,7 +172,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     protected Dialog onCreateDialog(int id) {
         Dialog dialog;
         
+        //
         switch(id) {
+        
         case DIALOG_ABOUT:
             // Use alert dialog, because we can do a bunch of stuff with it
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -187,8 +205,10 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
             dialog = builder.create();
             break;
+            
         default:
            dialog = null;
+        
         }
         
         return dialog;
