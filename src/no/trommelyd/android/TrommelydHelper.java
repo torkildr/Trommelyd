@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -97,6 +98,16 @@ public class TrommelydHelper {
         }
 
         return content.toString();
+    }
+    
+    // Get version number from manifest
+    public static String getVersionNumber(Context context) {
+        try {
+            String pkg = context.getPackageName();
+            return context.getPackageManager().getPackageInfo(pkg, 0).versionName;
+        } catch (NameNotFoundException e) {
+            return "";
+        }
     }
 
 }

@@ -1,7 +1,13 @@
 package no.trommelyd.android;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 
 /*
  *    This file is part of Trommelyd for Android.
@@ -34,6 +40,27 @@ public class TrommelydPreferences extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+
+        // New category
+        PreferenceCategory infoCategory = new PreferenceCategory(this);
+        infoCategory.setTitle("Info");
+        getPreferenceScreen().addPreference(infoCategory);
+        
+        // Insert extra preference with dynamic information
+        PreferenceScreen intentPref = getPreferenceManager().createPreferenceScreen(this);
+        intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
+                .setData(Uri.parse("http://app.trommelyd.no/")));
+        
+        // Version
+        String version = TrommelydHelper.getVersionNumber(this);
+        intentPref.setTitle(getString(R.string.app_name) + 
+                ((version.length() > 0) ? " v" + version : ""));
+
+        // Number of plays
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        int count = sharedPref.getInt("count", 0);
+        intentPref.setSummary("Sound played " + count + " time" + ((count > 1) ? "s" : ""));
+        infoCategory.addPreference(intentPref);
     }
     
 }
