@@ -8,6 +8,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 /*
  *    This file is part of Trommelyd for Android.
@@ -35,6 +36,12 @@ import android.preference.PreferenceScreen;
  */
 public class TrommelydPreferences extends PreferenceActivity {
 
+    public static final String PREF_MUTED = "muted";
+    public static final String PREF_COUNT = "count";
+    public static final String PREF_REPEAT = "repeat";
+    public static final String PREF_STARTUP = "startup";
+    public static final String PREF_FIRST = "first_run";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +69,16 @@ public class TrommelydPreferences extends PreferenceActivity {
 
         // Number of plays
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        int count = sharedPref.getInt("count", 0);
+        int count = sharedPref.getInt(PREF_COUNT, 0);
         intentPref.setSummary("Sound played " + count + " time" +
                 ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
+    }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        
+        Toast.makeText(this, R.string.preference_saved, Toast.LENGTH_SHORT).show();
     }
     
 }

@@ -57,7 +57,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (sharedPref.getBoolean("startup", false)) {
+        if (sharedPref.getBoolean(TrommelydPreferences.PREF_STARTUP, false)) {
             mBoundService.playSound();
         }
     }
@@ -119,9 +119,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Show this on "first" run
-        if (sharedPref.getBoolean("first_run", true)) {
+        if (sharedPref.getBoolean(TrommelydPreferences.PREF_FIRST, true)) {
             showDialog(DIALOG_FIRST_RUN);
-            sharedPref.edit().putBoolean("first_run", false).commit();
+            sharedPref.edit().putBoolean(TrommelydPreferences.PREF_FIRST, false).commit();
         }
     }
 

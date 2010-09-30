@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -37,9 +38,11 @@ import android.widget.Toast;
  * 
  * @author torkildr
  */
-public class TrommelydPlayerService extends Service implements OnCompletionListener {
+public class TrommelydPlayerService extends Service
+        implements OnCompletionListener, OnSharedPreferenceChangeListener {
 
     private MediaPlayer mPlayer;
+    private SharedPreferences mSharedPrefs;
     
     // Service actions
     public static final String ACTION_PLAY = "play";
@@ -49,6 +52,11 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
     
     // Sound file
     private final int resource = R.raw.trommelyd;
+    
+    // Pre-fetched preference variables
+    private boolean mPlayMuted;
+    private int mCount;
+    private boolean mRepeat;
     
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
@@ -76,35 +84,31 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
     public synchronized void playSound() {
         // If we don't know what sound to play, simply don't play it...
         if (mPlayer == null) {
-            Toast.makeText(getApplicationContext(),
-                    R.string.sound_error, Toast.LENGTH_SHORT).show();
-            
+            Toast.makeText(getApplicationContext(), R.string.sound_error, Toast.LENGTH_SHORT).show();
             return;
         }
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Get audio manager, need this for reading sound state
         AudioManager manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
         // Don't play sound if we've asked for it and it's not in normal mode
-        if (!sharedPref.getBoolean("muted", true) &&
-                manager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
+        if (!mPlayMuted && manager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
             return;
         }
         
-        // Either restart or start
+        // Either restart or start sound
         if (mPlayer.isPlaying()) {
             // Sound is playing
             if (mPlayer.getCurrentPosition() > MIN_PLAY_TIME) {
                 // User has opted out
-                if (sharedPref.getBoolean("repeat", true)) {
+                if (mRepeat) {
                     mPlayer.seekTo(0);
                 } else {
+                    // No restart of sound
                     return;
                 }
             } else {
-                // Ok, ugly with all these returns, but makes counting up below "prettier"
+                // Too soon!
                 return;
             }
         } else {
@@ -112,8 +116,8 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
             mPlayer.start();
         }
 
-        int count = sharedPref.getInt("count", 0);
-        sharedPref.edit().putInt("count", count + 1).commit();
+        // Since we're still here, we've obviously played the sound, count it
+        mSharedPrefs.edit().putInt(TrommelydPreferences.PREF_COUNT, mCount+1).commit();
     }
 
     // Prepare next play when completed
@@ -129,13 +133,27 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
         if (!createMediaPlayer()) {
             return;
         }
+        
+        // Grab preferences and register the onChange listener
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
+        
+        // Load preferences into pre-fetched variables
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_COUNT);
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_MUTED);
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_REPEAT);
     }
     
     // Service is destroyed, attempt to clean up...
     @Override
     public void onDestroy() {
+        // Release media player resources
         mPlayer.release();
         mPlayer = null;
+
+        // Clean up storage for preferences
+        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        mSharedPrefs = null;
     }
 
     // Handle commands, for now only play
@@ -165,6 +183,18 @@ public class TrommelydPlayerService extends Service implements OnCompletionListe
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
+    }
+
+    // Pre-fetch changes from preferences
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals(TrommelydPreferences.PREF_MUTED)) {
+            mPlayMuted = prefs.getBoolean(TrommelydPreferences.PREF_MUTED, true);
+        } else if (key.equals(TrommelydPreferences.PREF_COUNT)) {
+            mCount = prefs.getInt(TrommelydPreferences.PREF_COUNT, 0);
+        } else if (key.equals(TrommelydPreferences.PREF_REPEAT)) {
+            mRepeat = prefs.getBoolean(TrommelydPreferences.PREF_REPEAT, true);
+        }
     }
         
 }

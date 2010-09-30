@@ -41,5 +41,6 @@
     <string name="preference_repeat_text">If checked, sound can be restarted before it is completed</string>
     <string name="preference_muted_title">Play when muted</string>
     <string name="preference_muted_text">Play sound when phone is in muted or vibrate mode</string>
+    <string name="preference_saved">Preferences saved</string>
     
 </resources>

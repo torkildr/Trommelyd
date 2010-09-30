@@ -41,7 +41,7 @@ import android.widget.TextView;
  * @author torkildr
  */
 public class TrommelydHelper {
-
+    
     // Creates a AlertDialog filled with content from file
     public static AlertDialog getAlertDialogFromFile(Context context,
             int titleResource, int fileResource, boolean linkify) {
