@@ -21,16 +21,12 @@ License
 =======
 
 The "Trommelyd"-sound is created by Simon Lacelle, and is licensed under
-Creative Commons Sampling Plus 1.0
+[Creative Commons Sampling Plus 1.0] [2]
 
-License can be viewd at:
-* http://creativecommons.org/licenses/sampling+/1.0/
 
 All pictures or other media not explicitly mentioned in this document is
-licensed under Attribution-NonCommercial-ShareAlike 3.0 Unported
-
-License can be viewed at:
-* http://creativecommons.org/licenses/by-nc-sa/3.0/
-
+licensed under [Attribution-NonCommercial-ShareAlike 3.0 Unported] [3]
 
 [1]: http://developer.android.com/sdk/index.html
+[2]: http://creativecommons.org/licenses/sampling+/1.0/
+[3]: http://creativecommons.org/licenses/by-nc-sa/3.0/
