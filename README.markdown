@@ -12,8 +12,8 @@ Trommelyd for Android is an Android application (*duh..*).
 It is designed to work on most (all?) devices, and should support Android 1.5 and
 above.
 
-If you would like to build this yourself, you should use the [Android SDK][1] 2.2
-or above, due to manifest features only available from this version. The
+If you would like to build this yourself, you should use the [Android SDK] [1]
+2.2 or above, due to manifest features only available from this version. The
 application will still build for, and run, on earlier versions.
 
 
