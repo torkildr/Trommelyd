@@ -33,4 +33,4 @@ License can be viewed at:
 * http://creativecommons.org/licenses/by-nc-sa/3.0/
 
 
-[1] http://developer.android.com/sdk/index.html
+[1]: http://developer.android.com/sdk/index.html
