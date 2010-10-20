@@ -158,7 +158,7 @@ public class TrommelydPlayerService extends Service
 
     // Handle commands, for now only play
     private void handleCommand(Intent intent) {
-        // Someone stuffed this in the intent, obay!
+        // Someone stuffed this in the intent, obey!
         if (intent.getAction().equals(ACTION_PLAY)) {
             playSound();
         }
