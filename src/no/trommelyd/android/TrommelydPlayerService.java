@@ -72,10 +72,16 @@ public class TrommelydPlayerService extends Service
         if (mPlayer != null) {
             mPlayer.release();
         }
-        
-        // Create player and bind completion listener
-        mPlayer = MediaPlayer.create(this, resource);
 
+        // Sometimes, MediaPlayer.create will fail, this is by no means a bullet-proof
+        // solution, but it at least gives the player a chance to fix itself.
+        int retries = 5;
+        
+        do {
+            // Create player and bind completion listener
+            mPlayer = MediaPlayer.create(this, resource);
+        } while (mPlayer == null && --retries > 0);
+        
         // Player not created (should this maybe be handled better?)
         if (mPlayer != null) {
             mPlayer.setOnCompletionListener(this);

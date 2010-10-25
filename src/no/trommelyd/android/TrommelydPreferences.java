@@ -2,6 +2,7 @@ package no.trommelyd.android;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -34,7 +35,8 @@ import android.widget.Toast;
  * 
  * @author torkildr
  */
-public class TrommelydPreferences extends PreferenceActivity {
+public class TrommelydPreferences extends PreferenceActivity
+        implements OnSharedPreferenceChangeListener {
 
     public static final String PREF_MUTED = "muted";
     public static final String PREF_COUNT = "count";
@@ -42,10 +44,18 @@ public class TrommelydPreferences extends PreferenceActivity {
     public static final String PREF_STARTUP = "startup";
     public static final String PREF_FIRST = "first_run";
     
+    // Keep track of changes
+    private boolean mIsChanged = false;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Grab preferences and register the onChange listener
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this);
 
+        // Preferences to change
         addPreferencesFromResource(R.xml.preferences);
 
         // New category
@@ -73,12 +83,19 @@ public class TrommelydPreferences extends PreferenceActivity {
         intentPref.setSummary("Sound played " + count + " time" +
                 ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
     }
-    
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        mIsChanged = true;
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
-        
-        Toast.makeText(this, R.string.preference_saved, Toast.LENGTH_SHORT).show();
+
+        if (mIsChanged) {
+            Toast.makeText(this, R.string.preference_saved, Toast.LENGTH_SHORT).show();
+        }
     }
     
 }

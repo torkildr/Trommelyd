@@ -23,7 +23,7 @@
     
     <string name="app_name">Trommelyd</string>
 
-    <string name="sound_error">Ba-dom-tschh (sorry, didn\'t work)</string>
+    <string name="sound_error">Ba-dom-tschh! Sorry, error during play :(</string>
     <string name="first_run">Now what?</string>
     <string name="url">http://app.trommelyd.no/</string>
 
