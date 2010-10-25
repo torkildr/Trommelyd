@@ -59,3 +59,4 @@
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8" />
 
 </manifest>
+
