@@ -75,9 +75,15 @@ public class TrommelydPlayerService extends Service
         
         // Create player and bind completion listener
         mPlayer = MediaPlayer.create(this, resource);
-        mPlayer.setOnCompletionListener(this);
-        
-        return (mPlayer != null);
+
+        // Player not created (should this maybe be handled better?)
+        if (mPlayer != null) {
+            mPlayer.setOnCompletionListener(this);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Play sound, either called via local service interface or directly
