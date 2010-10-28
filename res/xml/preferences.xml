@@ -40,5 +40,33 @@
             android:title="@string/preference_muted_title"
             android:summary="@string/preference_muted_text"
             android:defaultValue="true" />
+
+    <PreferenceCategory
+            android:title="@string/preference_behavior">
+        
+	    <CheckBoxPreference
+	            android:key="shake"
+	            android:title="@string/preference_shake_title"
+	            android:summary="@string/preference_shake_text"
+	            android:defaultValue="false" />
+	
+		<com.hlidskialf.android.preference.SeekBarPreference
+			    android:key="sensitivity"
+			    android:title="@string/preference_sensitivity_title"
+			    android:summary="@string/preference_sensitivity_text"
+			    android:defaultValue="50"
+			    android:text="%" android:max="100"
+			    android:dependency="shake" />
+	            
+    </PreferenceCategory>
     
+    
+    <PreferenceCategory
+            android:title="@string/info">
+            
+        <PreferenceScreen
+                android:key="version_info" />    
+            
+    </PreferenceCategory>
+               
 </PreferenceScreen>

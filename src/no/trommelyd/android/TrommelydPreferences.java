@@ -5,10 +5,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
 /*
@@ -55,33 +54,28 @@ public class TrommelydPreferences extends PreferenceActivity
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
 
-        // Preferences to change
+        // Preferences
         addPreferencesFromResource(R.xml.preferences);
 
-        // New category
-        PreferenceCategory infoCategory = new PreferenceCategory(this);
-        infoCategory.setTitle(R.string.info);
+        // Add dynamic info for this one
+        Preference intentPref = getPreferenceScreen().findPreference("version_info");
 
-        getPreferenceScreen().addPreference(infoCategory);
-        
-        // Insert extra preference with dynamic information
-        PreferenceScreen intentPref = getPreferenceManager().createPreferenceScreen(this);
-        infoCategory.addPreference(intentPref);
-        
-        // Intent for preference, open web page
-        intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
-                .setData(Uri.parse(getText(R.string.url).toString())));
-        
-        // Version name
-        String version = TrommelydHelper.getVersionNumber(this);
-        intentPref.setTitle(getString(R.string.app_name) + 
-                ((version.length() > 0) ? " v" + version : ""));
-
-        // Number of plays
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        int count = sharedPref.getInt(PREF_COUNT, 0);
-        intentPref.setSummary("Sound played " + count + " time" +
-                ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
+        if (intentPref != null) {
+            // Intent for preference, open web page
+            intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
+                    .setData(Uri.parse(getText(R.string.url).toString())));
+            
+            // Version name
+            String version = TrommelydHelper.getVersionNumber(this);
+            intentPref.setTitle(getString(R.string.app_name) + 
+                    ((version.length() > 0) ? " v" + version : ""));
+    
+            // Number of plays
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            int count = sharedPref.getInt(PREF_COUNT, 0);
+            intentPref.setSummary("Sound played " + count + " time" +
+                    ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
+        }
     }
 
     @Override

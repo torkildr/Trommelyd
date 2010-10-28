@@ -46,6 +46,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     // Binding to local service
     private TrommelydPlayerService mBoundService;
     
+    // Sensor listener
+    private TrommelydSensorListener mSensorListener;
+    
     // Dialog boxes
     public static final int DIALOG_ABOUT = 1;
     public static final int DIALOG_FIRST_RUN = 2;
@@ -99,6 +102,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                 }
             });
         }
+
+        // Create sensor listener, does not start listening
+        mSensorListener = new TrommelydSensorListener(this);
     }
 
     @Override
@@ -110,6 +116,16 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
         // We try to bind the player service
         bindService(mPlayerIntent, this, BIND_AUTO_CREATE);
+
+        // Register callback for sensor, and start it (if applicable)
+        mSensorListener.registerSensorChangeCallback(new Runnable() {
+            @Override
+            public void run() {
+                mBoundService.playSound();
+            }
+        });
+        
+        mSensorListener.startListener();
     }
     
     @Override
@@ -132,6 +148,10 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
         // Removes binding to local service
         unbindService(this);
+
+        // Stop sensor listening
+        mSensorListener.stopListener();
+        mSensorListener.unregisterSensorChangeCallback();
     }
     
     // Fill options menu (when pressing the Menu button)
