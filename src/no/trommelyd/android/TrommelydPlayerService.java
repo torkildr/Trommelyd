@@ -102,7 +102,7 @@ public class TrommelydPlayerService extends Service
         }
 
         // Don't play sound if we've asked for it and it's not in normal mode
-        if (!mPlayMuted &&) {
+        if (!mPlayMuted) {
             // Get audio manager, need this for reading sound state
             AudioManager manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
