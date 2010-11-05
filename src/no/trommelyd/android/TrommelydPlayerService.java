@@ -101,12 +101,14 @@ public class TrommelydPlayerService extends Service
             return;
         }
 
-        // Get audio manager, need this for reading sound state
-        AudioManager manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-
         // Don't play sound if we've asked for it and it's not in normal mode
-        if (!mPlayMuted && manager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-            return;
+        if (!mPlayMuted &&) {
+            // Get audio manager, need this for reading sound state
+            AudioManager manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+
+            if (manager.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
+                return;
+            }
         }
         
         // Either restart or start sound
@@ -161,12 +163,16 @@ public class TrommelydPlayerService extends Service
     @Override
     public void onDestroy() {
         // Release media player resources
-        mPlayer.release();
-        mPlayer = null;
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
 
         // Clean up storage for preferences
-        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
-        mSharedPrefs = null;
+        if (mSharedPrefs != null) {
+            mSharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
+            mSharedPrefs = null;
+        }
     }
 
     // Handle commands, for now only play
@@ -214,3 +220,4 @@ public class TrommelydPlayerService extends Service
     }
         
 }
+
