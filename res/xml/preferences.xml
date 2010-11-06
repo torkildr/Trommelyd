@@ -23,23 +23,38 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="Trommelyd Preferences">
 
-    <CheckBoxPreference
-            android:key="startup"
-            android:title="@string/preference_startup_title"
-            android:summary="@string/preference_startup_text"
-            android:defaultValue="false" />
-
-    <CheckBoxPreference
-            android:key="repeat"
-            android:title="@string/preference_repeat_title"
-            android:summary="@string/preference_repeat_text"
-            android:defaultValue="true" />
-
-    <CheckBoxPreference
-            android:key="muted"
-            android:title="@string/preference_muted_title"
-            android:summary="@string/preference_muted_text"
-            android:defaultValue="true" />
+    <PreferenceCategory
+            android:title="@string/preference_main">
+        
+	    <CheckBoxPreference
+	            android:key="startup"
+	            android:title="@string/preference_startup_title"
+	            android:summary="@string/preference_startup_text"
+	            android:defaultValue="false" />
+	
+	    <CheckBoxPreference
+	            android:key="repeat"
+	            android:title="@string/preference_repeat_title"
+	            android:summary="@string/preference_repeat_text"
+	            android:defaultValue="true" />
+	
+        <com.hlidskialf.android.preference.SeekBarPreference
+                android:key="delay"
+                android:title="@string/preference_delay_title"
+                android:summary="@string/preference_delay_text"
+                android:text=" ms"
+                min="100"
+                android:max="800"
+                android:defaultValue="500"
+                android:dependency="repeat" />
+                
+	    <CheckBoxPreference
+	            android:key="muted"
+	            android:title="@string/preference_muted_title"
+	            android:summary="@string/preference_muted_text"
+	            android:defaultValue="true" />
+    
+    </PreferenceCategory>
 
     <PreferenceCategory
             android:title="@string/preference_behavior">
@@ -50,14 +65,16 @@
 	            android:summary="@string/preference_shake_text"
 	            android:defaultValue="false" />
 	
-		<com.hlidskialf.android.preference.SeekBarPreference
-			    android:key="sensitivity"
-			    android:title="@string/preference_sensitivity_title"
-			    android:summary="@string/preference_sensitivity_text"
-			    android:defaultValue="50"
-			    android:text="%" android:max="100"
-			    android:dependency="shake" />
-	            
+        <com.hlidskialf.android.preference.SeekBarPreference
+                android:key="sensitivity"
+                android:title="@string/preference_sensitivity_title"
+                android:summary="@string/preference_sensitivity_text"
+                android:text="%"
+                min="0"
+                android:max="100"
+                android:defaultValue="50"
+                android:dependency="shake" />
+                
     </PreferenceCategory>
     
     

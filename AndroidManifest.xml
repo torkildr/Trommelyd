@@ -27,7 +27,7 @@
 	
 	    <!-- Activities -->
 	
-		<activity android:name=".TrommelydActivity" android:label="@string/app_name" android:theme="@style/MainStyle">
+		<activity android:name=".TrommelydActivity" android:label="@string/app_name" android:theme="@style/main_style">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />

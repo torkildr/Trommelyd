@@ -40,6 +40,7 @@ public class TrommelydPreferences extends PreferenceActivity
     public static final String PREF_MUTED = "muted";
     public static final String PREF_COUNT = "count";
     public static final String PREF_REPEAT = "repeat";
+    public static final String PREF_DELAY = "delay";
     public static final String PREF_STARTUP = "startup";
     public static final String PREF_FIRST = "first_run";
     

@@ -48,9 +48,6 @@ public class TrommelydPlayerService extends Service
     // Service actions
     public static final String ACTION_PLAY = "play";
     
-    // Minimum time to play sound in ms
-    private final int MIN_PLAY_TIME = 500;
-    
     // Sound file
     private final int resource = R.raw.trommelyd;
     
@@ -58,6 +55,7 @@ public class TrommelydPlayerService extends Service
     private boolean mPlayMuted;
     private int mCount;
     private boolean mRepeat;
+    private int mDelay;
     
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
@@ -114,7 +112,7 @@ public class TrommelydPlayerService extends Service
         // Either restart or start sound
         if (mPlayer.isPlaying()) {
             // Sound is playing
-            if (mPlayer.getCurrentPosition() > MIN_PLAY_TIME) {
+            if (mPlayer.getCurrentPosition() > mDelay) {
                 // User has opted out
                 if (mRepeat) {
                     mPlayer.seekTo(0);
@@ -157,6 +155,7 @@ public class TrommelydPlayerService extends Service
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_COUNT);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_MUTED);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_REPEAT);
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_DELAY);
     }
     
     // Service is destroyed, attempt to clean up...
@@ -216,6 +215,8 @@ public class TrommelydPlayerService extends Service
             mCount = prefs.getInt(TrommelydPreferences.PREF_COUNT, 0);
         } else if (key.equals(TrommelydPreferences.PREF_REPEAT)) {
             mRepeat = prefs.getBoolean(TrommelydPreferences.PREF_REPEAT, true);
+        } else if (key.equals(TrommelydPreferences.PREF_DELAY)) {
+            mDelay = prefs.getInt(TrommelydPreferences.PREF_DELAY, 500);
         }
     }
         
