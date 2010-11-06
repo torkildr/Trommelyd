@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
+import android.media.SoundPool;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -40,22 +39,35 @@ import android.widget.Toast;
  * @author torkildr
  */
 public class TrommelydPlayerService extends Service
-        implements OnCompletionListener, OnSharedPreferenceChangeListener {
+        implements OnSharedPreferenceChangeListener {
 
-    private MediaPlayer mPlayer;
+    // To minimize latency, we keep track of preferences
     private SharedPreferences mSharedPrefs;
     
     // Service actions
     public static final String ACTION_PLAY = "play";
     
-    // Sound file
-    private final int resource = R.raw.trommelyd;
+    // Time, in ms, to wait if sound is not loaded
+    public static final int WAIT_TIME = 1500;
     
     // Pre-fetched preference variables
     private boolean mPlayMuted;
     private int mCount;
     private boolean mRepeat;
     private int mDelay;
+    
+    // Stream / pool
+    private SoundPool mPool;
+
+    private int[] mSounds = { -1 };
+    private int[] mStreams = { -1 };
+    private final int[] mResources = { R.raw.trommelyd };
+
+    // We use this to keep track of the sound, as SoundPool does not support this
+    private long[] mStartTime = { -1 };
+
+    // List of streams we have
+    public static final int STREAM_TROMMELYD = 0;
     
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
@@ -66,35 +78,31 @@ public class TrommelydPlayerService extends Service
         }
     }
     
-    // For some reason, we want to create the media player
+    // For some reason, we want to create the sound pool
     private synchronized boolean createMediaPlayer() {
-        if (mPlayer != null) {
-            mPlayer.release();
+        if (mPool != null) {
+            mPool.release();
+            mPool = null;
         }
 
-        // Sometimes, MediaPlayer.create will fail, this is by no means a bullet-proof
-        // solution, but it at least gives the player a chance to fix itself.
-        int retries = 5;
+        // Create the sound pool; number of streams, play as music, default quality
+        mPool = new SoundPool(mStreams.length, AudioManager.STREAM_MUSIC, 0);
         
-        do {
-            // Create player and bind completion listener
-            mPlayer = MediaPlayer.create(this, resource);
-        } while (mPlayer == null && --retries > 0);
-        
-        // Player not created (should this maybe be handled better?)
-        if (mPlayer != null) {
-            mPlayer.setOnCompletionListener(this);
+        // Load the stream(s)
+        if (mPool != null) {
+            // 1 == default priority, "future compatibility"
+            mSounds[STREAM_TROMMELYD] = mPool.load(this, mResources[STREAM_TROMMELYD], 1); 
 
             return true;
         } else {
             return false;
         }
     }
-
+    
     // Play sound, either called via local service interface or directly
-    public synchronized void playSound() {
+    public synchronized void playSound(int stream) {
         // If we don't know what sound to play, simply don't play it...
-        if (mPlayer == null) {
+        if (mPool == null) {
             Toast.makeText(getApplicationContext(), R.string.sound_error, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -109,16 +117,22 @@ public class TrommelydPlayerService extends Service
             }
         }
         
-        // Either restart or start sound
-        if (mPlayer.isPlaying()) {
-            // Sound is playing
-            if (mPlayer.getCurrentPosition() > mDelay) {
+        long startWait = System.currentTimeMillis();
+        
+        // In the off-chance that the sound is not yet loaded, we wait for it to do so
+        while (mSounds[stream] == -1 && (System.currentTimeMillis() - startWait) < WAIT_TIME);
+        
+        // Sound is playing
+        if (mStartTime[stream] > 0) {
+            // Check if sound has been playing for long
+            if ((System.currentTimeMillis() - mStartTime[stream]) > mDelay) {
                 // User has opted out
-                if (mRepeat) {
-                    mPlayer.seekTo(0);
-                } else {
-                    // No restart of sound
+                if (!mRepeat) {
                     return;
+                } else {
+                    // Stop previous playing stream
+                    mPool.stop(mStreams[stream]);
+                    mStreams[stream] = startStream(stream);
                 }
             } else {
                 // Too soon!
@@ -126,17 +140,19 @@ public class TrommelydPlayerService extends Service
             }
         } else {
             // Start playing sound
-            mPlayer.start();
+            mStreams[stream] = startStream(stream);
         }
 
         // Since we're still here, we've obviously played the sound, count it
         mSharedPrefs.edit().putInt(TrommelydPreferences.PREF_COUNT, mCount+1).commit();
     }
 
-    // Prepare next play when completed
-    @Override
-    public void onCompletion(MediaPlayer player) {
-        createMediaPlayer();
+    private int startStream(int stream) {
+        // Store start time
+        mStartTime[stream] = System.currentTimeMillis();
+
+        // Play sound, sound-id, l/r volume, priority, loop, rate
+        return mPool.play(mSounds[stream], 1.0f, 1.0f, 0, 0, 1.0f);
     }
    
     // Service is created, prepare media player
@@ -162,9 +178,9 @@ public class TrommelydPlayerService extends Service
     @Override
     public void onDestroy() {
         // Release media player resources
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
+        if (mPool != null) {
+            mPool.release();
+            mPool = null;
         }
 
         // Clean up storage for preferences
@@ -178,7 +194,7 @@ public class TrommelydPlayerService extends Service
     private void handleCommand(Intent intent) {
         // Someone stuffed this in the intent, obey!
         if (intent.getAction().equals(ACTION_PLAY)) {
-            playSound();
+            playSound(STREAM_TROMMELYD);
         }
     }
     

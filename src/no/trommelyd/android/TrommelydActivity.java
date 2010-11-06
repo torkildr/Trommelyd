@@ -61,7 +61,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sharedPref.getBoolean(TrommelydPreferences.PREF_STARTUP, false)) {
-            mBoundService.playSound();
+            mBoundService.playSound(TrommelydPlayerService.STREAM_TROMMELYD);
         }
     }
 
@@ -97,7 +97,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                         Toast.makeText(getApplicationContext(),
                                 "Ba-dom-tschhh (sorry, no sound)", Toast.LENGTH_SHORT).show();
                     } else {
-                        mBoundService.playSound();
+                        mBoundService.playSound(TrommelydPlayerService.STREAM_TROMMELYD);
                     }
                 }
             });
@@ -121,7 +121,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         mSensorListener.registerSensorChangeCallback(new Runnable() {
             @Override
             public void run() {
-                mBoundService.playSound();
+                mBoundService.playSound(TrommelydPlayerService.STREAM_TROMMELYD);
             }
         });
         
