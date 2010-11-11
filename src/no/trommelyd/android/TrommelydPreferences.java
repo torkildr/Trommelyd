@@ -43,6 +43,8 @@ public class TrommelydPreferences extends PreferenceActivity
     public static final String PREF_DELAY = "delay";
     public static final String PREF_STARTUP = "startup";
     public static final String PREF_FIRST = "first_run";
+    public static final String PREF_SHAKE = "shake";
+    public static final String PREF_SENSITIVITY = "sensitivity";
     
     // Keep track of changes
     private boolean mIsChanged = false;

@@ -52,18 +52,23 @@ public class SeekBarPreference extends DialogPreference implements
         layout.setPadding(6, 6, 6, 6);
 
         mSplashText = new TextView(mContext);
-        if (mDialogMessage != null)
+
+        // Only add if there
+        if (mDialogMessage != null) {
             mSplashText.setText(mDialogMessage);
-        layout.addView(mSplashText);
+            layout.addView(mSplashText);
+        }
 
-        mValueText = new TextView(mContext);
-        mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
-        mValueText.setTextSize(mTextSize);
-        params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout.addView(mValueText, params);
-
+        if (mSuffix != null) {
+            mValueText = new TextView(mContext);
+            mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
+            mValueText.setTextSize(mTextSize);
+            params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            layout.addView(mValueText, params);
+        }
+        
         mSeekBar = new SeekBar(mContext);
         mSeekBar.setOnSeekBarChangeListener(this);
         layout.addView(mSeekBar, new LinearLayout.LayoutParams(
@@ -104,8 +109,10 @@ public class SeekBarPreference extends DialogPreference implements
     }
 
     public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
-        String t = String.valueOf(value + mMin);
-        mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
+        if (mSuffix != null) {
+            String t = String.valueOf(value + mMin);
+            mValueText.setText(t.concat(mSuffix));
+        }
     }
 
     public void onStartTrackingTouch(SeekBar seek) {

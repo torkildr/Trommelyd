@@ -47,7 +47,7 @@
     <string name="preference_delay_text">Delay before sound can be replayed</string>
     
     <string name="preference_muted_title">Play when muted</string>
-    <string name="preference_muted_text">Play sound when phone is in muted or vibrate mode</string>
+    <string name="preference_muted_text">Play sound when device is in muted or vibrate mode</string>
     
     <string name="preference_shake_title">Shake it!</string>
     <string name="preference_shake_text">Shake to play sound</string>

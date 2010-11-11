@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -94,17 +95,14 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                 @Override
                 public void onClick(View v) {
                     if (mBoundService == null) {
-                        Toast.makeText(getApplicationContext(),
-                                "Ba-dom-tschhh (sorry, no sound)", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.sound_error,
+                                Toast.LENGTH_SHORT).show();
                     } else {
                         mBoundService.playSound();
                     }
                 }
             });
         }
-
-        // Create sensor listener, does not start listening
-        mSensorListener = new TrommelydSensorListener(this);
     }
 
     @Override
@@ -116,16 +114,6 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
         // We try to bind the player service
         bindService(mPlayerIntent, this, BIND_AUTO_CREATE);
-
-        // Register callback for sensor, and start it (if applicable)
-        mSensorListener.registerSensorChangeCallback(new Runnable() {
-            @Override
-            public void run() {
-                mBoundService.playSound();
-            }
-        });
-        
-        mSensorListener.startListener();
     }
     
     @Override
@@ -133,6 +121,20 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         super.onResume();
         
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        boolean shake = sharedPref.getBoolean(TrommelydPreferences.PREF_SHAKE, false);
+        
+        if (shake) {
+            Toast.makeText(this, R.string.preference_shake_text, Toast.LENGTH_SHORT).show();
+
+            // Sensor is not started, do this now
+            if (mSensorListener == null) {
+                enableShakeSensor();
+            }
+        } else if (mSensorListener != null) {
+            // Sensor has been enabled, but is not to be used, disable it
+            disableShakeSensor();
+        }
 
         // Show this on "first" run
         if (sharedPref.getBoolean(TrommelydPreferences.PREF_FIRST, true)) {
@@ -148,10 +150,8 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
 
         // Removes binding to local service
         unbindService(this);
-
-        // Stop sensor listening
-        mSensorListener.stopListener();
-        mSensorListener.unregisterSensorChangeCallback();
+        
+        disableShakeSensor();
     }
     
     // Fill options menu (when pressing the Menu button)
@@ -181,6 +181,42 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         
         default:
             return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    private void enableShakeSensor() {
+        // Fix orientation so sound doesn't stop in the middle
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        
+        // Create sensor listener, does not start listening
+        mSensorListener = new TrommelydSensorListener(this);
+        
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Set sensitivity from preference
+        mSensorListener.setSensitivity(
+                sharedPref.getInt(TrommelydPreferences.PREF_SENSITIVITY, 50));
+        
+        // Register callback for sensor, and start it when sensor is triggered
+        mSensorListener.registerSensorChangeCallback(new Runnable() {
+            @Override
+            public void run() {
+                mBoundService.playSound();
+            }
+        });
+
+        mSensorListener.startListener();
+    }
+    
+    private void disableShakeSensor() {
+        // Reset orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        
+        // Stop sensor listening
+        if (mSensorListener != null) {
+            mSensorListener.stopListener();
+            mSensorListener.unregisterSensorChangeCallback();
+            mSensorListener = null;
         }
     }
     

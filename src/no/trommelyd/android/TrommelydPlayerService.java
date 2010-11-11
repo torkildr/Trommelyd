@@ -111,17 +111,19 @@ public class TrommelydPlayerService extends Service
         
         // Either restart or start sound
         if (mPlayer.isPlaying()) {
+            Log.d("Trommelyd", "Invoked: delay=" + mDelay + ", pos=" + mPlayer.getCurrentPosition());
+            
             // Sound is playing
-            if (mPlayer.getCurrentPosition() > mDelay) {
-                // User has opted out
-                if (mRepeat) {
+            if (mRepeat) {
+                // No restart of sound
+                if (mPlayer.getCurrentPosition() > mDelay) {
                     mPlayer.seekTo(0);
                 } else {
-                    // No restart of sound
+                    // Too soon!
                     return;
                 }
             } else {
-                // Too soon!
+                // User has opted out
                 return;
             }
         } else {
