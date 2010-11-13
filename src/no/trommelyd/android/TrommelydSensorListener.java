@@ -12,12 +12,11 @@ public class TrommelydSensorListener implements SensorEventListener {
     private SensorManager mSensorManager;
     private Runnable mCallback;
     
-    // TODO: change this to preference, already exists, only lacks the logic.
-    // also, range?? min: 2-3, max: 9-10?
+    // Max/min threshold, might be tentative values
     private static final double MIN_THRESHOLD = 1.5f;
     private static final double MAX_THRESHOLD = 9.5f;
     
-    // Sensitivity, typically set by user (set to infinite so things do go crazy by default)
+    // Sensitivity, typically set by user (set to infinite, so things don't go crazy by default)
     private double mSensitivity = Double.POSITIVE_INFINITY;
     
     // Delta gravity
@@ -39,7 +38,7 @@ public class TrommelydSensorListener implements SensorEventListener {
         float y = event.values[SensorManager.DATA_Y];
         float z = event.values[SensorManager.DATA_Z];
         
-        // Store current
+        // Store last gravity
         mLastGravity = mCurrentGravity;
         
         // Calculate current gravity
@@ -53,10 +52,8 @@ public class TrommelydSensorListener implements SensorEventListener {
         
         // Above threshold, trigger call-back
         if (mAcceleration > mSensitivity && mCallback != null) {
-            Log.d("Trommelyd", "Sensor changed, current value: " + mAcceleration + ", delta: " + mAcceleration);
-            Log.d("Trommelyd", "Sensor threshold: " + mSensitivity);
-            
             mCallback.run();
+
             Log.d("Trommelyd", "Sensor threshold reached: " + mAcceleration);
         }
     }
@@ -64,7 +61,10 @@ public class TrommelydSensorListener implements SensorEventListener {
     public TrommelydSensorListener(Context context) {
         // Grab the sensor service
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        Log.d("Trommelyd", "Sensor started: " + mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER));
+
+        if (mSensorManager != null) {
+            Log.d("Trommelyd", "Sensor started: " + mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER));
+        }
     }
     
     public void registerSensorChangeCallback(Runnable runnable) {
@@ -76,19 +76,23 @@ public class TrommelydSensorListener implements SensorEventListener {
     }
     
     public void startListener() {
-        // Register sensor listener, maybe this class, per chance?
-        mSensorManager.registerListener(this,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
-
-        Log.d("Trommelyd", "Sensor listener started");
+        if (hasSensor(Sensor.TYPE_ACCELEROMETER)) {
+            // Register sensor listener, maybe this class, per chance?
+            mSensorManager.registerListener(this,
+                    mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+            
+            Log.d("Trommelyd", "Sensor listener started");
+        }
     }
 
     public void stopListener() {
-        // Unregister listener
-        mSensorManager.unregisterListener(this);
-        
-        Log.d("Trommelyd", "Sensor listener stopped");
+        if (mSensorManager != null) {
+            // Unregister listener
+            mSensorManager.unregisterListener(this);
+            
+            Log.d("Trommelyd", "Sensor listener stopped");
+        }
     }
     
     // Sets the sensitivity between MAX_THRESHOLD and MIN_THRESHOLD, given a percentage
@@ -100,6 +104,14 @@ public class TrommelydSensorListener implements SensorEventListener {
         double current = MIN_THRESHOLD + ((MAX_THRESHOLD - MIN_THRESHOLD) * factor);
         
         mSensitivity = (MIN_THRESHOLD + MAX_THRESHOLD) - current;
+    }
+    
+    private boolean hasSensor(int type) {
+        if (mSensorManager != null && mSensorManager.getSensorList(type) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }
