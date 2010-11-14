@@ -106,6 +106,10 @@ public class TrommelydSensorListener implements SensorEventListener {
         mSensitivity = (MIN_THRESHOLD + MAX_THRESHOLD) - current;
     }
     
+    public boolean hasSensor() {
+        return hasSensor(Sensor.TYPE_ACCELEROMETER);
+    }
+    
     private boolean hasSensor(int type) {
         if (mSensorManager != null && mSensorManager.getSensorList(type) != null) {
             return true;

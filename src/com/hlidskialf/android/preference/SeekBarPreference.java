@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class SeekBarPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
+    
     private static final String androidns = "http://schemas.android.com/apk/res/android";
 
     private SeekBar mSeekBar;
@@ -53,12 +54,13 @@ public class SeekBarPreference extends DialogPreference implements
 
         mSplashText = new TextView(mContext);
 
-        // Only add if there
+        // Only add if we supply a text
         if (mDialogMessage != null) {
             mSplashText.setText(mDialogMessage);
             layout.addView(mSplashText);
         }
 
+        // If we don't supply this, suppress the whole damn thing
         if (mSuffix != null) {
             mValueText = new TextView(mContext);
             mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -68,7 +70,8 @@ public class SeekBarPreference extends DialogPreference implements
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             layout.addView(mValueText, params);
         }
-        
+
+        // Seek bar stuff
         mSeekBar = new SeekBar(mContext);
         mSeekBar.setOnSeekBarChangeListener(this);
         layout.addView(mSeekBar, new LinearLayout.LayoutParams(
@@ -88,6 +91,7 @@ public class SeekBarPreference extends DialogPreference implements
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
 
+        // Only if OK is pressed
         if (positiveResult)
             persistInt(mSeekBar.getProgress() + mMin);
     }

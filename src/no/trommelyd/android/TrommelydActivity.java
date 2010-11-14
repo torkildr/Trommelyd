@@ -125,11 +125,13 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         boolean shake = sharedPref.getBoolean(TrommelydPreferences.PREF_SHAKE, false);
         
         if (shake) {
-            Toast.makeText(this, R.string.preference_shake_text, Toast.LENGTH_SHORT).show();
-
             // Sensor is not started, do this now
             if (mSensorListener == null) {
                 enableShakeSensor();
+            }
+            
+            if (mSensorListener != null && mSensorListener.hasSensor()) {
+                Toast.makeText(this, R.string.preference_shake_text, Toast.LENGTH_SHORT).show();
             }
         } else if (mSensorListener != null) {
             // Sensor has been enabled, but is not to be used, disable it

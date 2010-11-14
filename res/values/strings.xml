@@ -51,6 +51,7 @@
     
     <string name="preference_shake_title">Shake it!</string>
     <string name="preference_shake_text">Shake to play sound</string>
+    <string name="preference_shake_error">Device does not support shake</string>    
     <string name="preference_sensitivity_title">Sensitivity</string>
     <string name="preference_sensitivity_text">Shake sensitivity</string>
     

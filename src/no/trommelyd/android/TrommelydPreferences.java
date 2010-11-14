@@ -59,6 +59,20 @@ public class TrommelydPreferences extends PreferenceActivity
 
         // Preferences
         addPreferencesFromResource(R.xml.preferences);
+        
+        // Check to see if the shake ability should be enabled
+        TrommelydSensorListener sensorListener = new TrommelydSensorListener(this);
+        
+        if (!sensorListener.hasSensor()) {
+            Preference shakePref = getPreferenceScreen().findPreference("shake");
+            
+            if (shakePref != null) {
+                shakePref.setEnabled(false);
+                shakePref.setSummary(R.string.preference_shake_error);
+            }
+            
+            sharedPrefs.edit().putBoolean("shake", false).commit();
+        }
 
         // Add dynamic info for this one
         Preference intentPref = getPreferenceScreen().findPreference("version_info");
