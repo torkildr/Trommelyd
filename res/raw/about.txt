@@ -6,7 +6,7 @@ The "Trommelyd"-sound is created by Simon Lacelle, and is licensed under
 Creative Commons Sampling Plus 1.0.
 
 Information on how you can obtain the complete source code can be found on:
-http://app.trommelyd.no/
+http://markild.no/category/trommelyd
 
 For questions or bug reports, please send an email to:
 contact@trommelyd.no
