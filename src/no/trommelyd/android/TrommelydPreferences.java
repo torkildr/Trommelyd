@@ -45,6 +45,8 @@ public class TrommelydPreferences extends PreferenceActivity
     public static final String PREF_FIRST = "first_run";
     public static final String PREF_SHAKE = "shake";
     public static final String PREF_SENSITIVITY = "sensitivity";
+    public static final String PREF_ORIENTATION = "orientation";
+    public static final String PREF_STATUSBAR = "statusbar";
     
     // Keep track of changes
     private boolean mIsChanged = false;
@@ -90,8 +92,7 @@ public class TrommelydPreferences extends PreferenceActivity
             // Number of plays
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             int count = sharedPref.getInt(PREF_COUNT, 0);
-            intentPref.setSummary("Sound played " + count + " time" +
-                    ((count > 1) ? "s" : ((count == 0) ? "s" : "")));
+            intentPref.setSummary(getString(R.string.sound_played) + ": " + count);
         }
     }
 

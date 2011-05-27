@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
@@ -122,6 +123,13 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         
+        // If user has opted in, show status bar
+        toggleStatusBarVisability(sharedPref.getBoolean(TrommelydPreferences.PREF_STATUSBAR, true));
+        
+        // Set orientation
+        setScreenOrientation(
+                sharedPref.getString(TrommelydPreferences.PREF_ORIENTATION, "default"));
+        
         boolean shake = sharedPref.getBoolean(TrommelydPreferences.PREF_SHAKE, false);
         
         if (shake) {
@@ -186,14 +194,41 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         }
     }
     
+    private void setScreenOrientation(String orientation) {
+        if (orientation.equals("default")) {
+            // fixed default
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        } else if (orientation.equals("landscape")) {
+            // fixed landscape
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (orientation.equals("portrait")) {
+            // fixed portrait
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else if (orientation.equals("automatic")) {
+            // automatic by sensor
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
+    }
+
+    private void toggleStatusBarVisability(boolean statusbar) {
+            int flag;
+            
+            if (!statusbar) {
+                flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            } else {
+                flag = 0;
+            }
+            
+            // sets the application to full screen, thus removing the status bar
+            // this can be done after layout is loaded
+            getWindow().setFlags(flag, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+       }
+
     private void enableShakeSensor() {
-        // Fix orientation so sound doesn't stop in the middle
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         // Create sensor listener, does not start listening
         mSensorListener = new TrommelydSensorListener(this);
-        
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Set sensitivity from preference
         mSensorListener.setSensitivity(

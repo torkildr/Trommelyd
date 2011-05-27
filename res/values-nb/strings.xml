@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+     This file is part of Trommelyd for Android.
+     Copyright (C) Torkild Retvedt
+     http://app.trommelyd.no/
+ 
+     Trommelyd for Android is free software: you can redistribute it and/or
+     modify it under the terms of the GNU General Public License as published
+     by the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+ 
+     Trommelyd for Android is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+     Public License for more details.
+ 
+     You should have received a copy of the GNU General Public License along
+     with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    
+    <string name="app_name">Trommelyd</string>
+
+    <string name="sound_error">Ba-dom-tschh! Sorry, klarte ikke spille :(</string>
+    <string name="first_run">Hva nå?</string>
+    <string name="url">http://app.trommelyd.no/</string>
+
+    <string name="about">Om</string>
+    <string name="close">Lukk</string>
+    <string name="help">Hjelp</string>
+    <string name="preferences">Innstillinger</string>
+    <string name="quit">Avslutt</string>
+    <string name="info">Info</string>
+    
+    <string name="preference_category">Innstillinger for Trommelyd</string>
+    <string name="preference_main">Hovedvalg</string>
+    <string name="preference_behavior">Rist løs!</string>
+    
+    <string name="preference_startup_title">Lyd ved fokus</string>
+    <string name="preference_startup_text">Spill av "Trommelyd"-lyden når programmet får fokus</string>
+    
+    <string name="preference_repeat_title">Gjentagende avspilling</string>
+    <string name="preference_repeat_text">Hvis avhuket kan lyden startes på nytt før avsluttet</string>
+    <string name="preference_delay_title">Forsinkelse</string>
+    <string name="preference_delay_text">Forsinkelse før lyden kan spilles på nytt</string>
+    
+    <string name="preference_muted_title">Avspilling i stillemodus</string>
+    <string name="preference_muted_text">Avspill lyd når enheten er satt lydløs eller på vibrering</string>
+    
+    <string name="preference_shake_title">Rist løs!</string>
+    <string name="preference_shake_text">Rist enheten for avspilling</string>
+    <string name="preference_shake_error">Denne enheten støtter desverre ikke risting</string>    
+    <string name="preference_sensitivity_title">Følsomhet</string>
+    <string name="preference_sensitivity_text">Følsomhet på risting</string>
+    
+    <string name="preference_appearance">Utseende</string>
+    <string name="preference_appearance_status_title">Vis statuslinjen</string>
+    <string name="preference_appearance_status_text">Hvis valgt er statuslinjen synlig</string>
+    <string name="preference_appearance_orientation_title">Skjermorientering</string>
+    <string name="preference_appearance_orientation_text">Velg skjermorientering</string>
+    
+    <string name="preference_saved">Innstillingene er lagret</string>
+    <string name="sound_played">Ganger avspilt</string>
+    
+</resources>

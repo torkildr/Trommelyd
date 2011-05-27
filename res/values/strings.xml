@@ -21,7 +21,7 @@
 
 <resources>
     
-    <string name="app_name">Trommelyd</string>
+    <string name="app_name">Drumsound</string>
 
     <string name="sound_error">Ba-dom-tschh! Sorry, error during play :(</string>
     <string name="first_run">Now what?</string>
@@ -34,12 +34,12 @@
     <string name="quit">Exit</string>
     <string name="info">Info</string>
     
-    <string name="preference_category">Trommelyd Preferences</string>
+    <string name="preference_category">Drumsound Preferences</string>
     <string name="preference_main">Main options</string>
     <string name="preference_behavior">Shake it!</string>
     
     <string name="preference_startup_title">Sound on focus</string>
-    <string name="preference_startup_text">Play the "Trommelyd" sound when application gets focus</string>
+    <string name="preference_startup_text">Play the "Drumsound" sound when application gets focus</string>
     
     <string name="preference_repeat_title">Repeatable sound</string>
     <string name="preference_repeat_text">If checked, sound can be restarted before it is completed</string>
@@ -55,6 +55,12 @@
     <string name="preference_sensitivity_title">Sensitivity</string>
     <string name="preference_sensitivity_text">Shake sensitivity</string>
     
-    <string name="preference_saved">Preferences saved</string>
+    <string name="preference_appearance">Appearance</string>
+    <string name="preference_appearance_status_title">Show status bar</string>
+    <string name="preference_appearance_status_text">If checked, status bar is visible</string>
+    <string name="preference_appearance_orientation_title">Orientation</string>
+    <string name="preference_appearance_orientation_text">Choose default orientation</string>
     
+    <string name="preference_saved">Preferences saved</string>
+    <string name="sound_played">Times played</string>
 </resources>

@@ -21,7 +21,7 @@
 
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:title="Trommelyd Preferences">
+        android:title="@string/preference_category">
 
     <PreferenceCategory
             android:title="@string/preference_main">
@@ -76,7 +76,25 @@
                 
     </PreferenceCategory>
     
-    
+    <PreferenceCategory
+            android:title="@string/preference_appearance">
+        
+        <CheckBoxPreference
+                android:key="statusbar"
+                android:title="@string/preference_appearance_status_title"
+                android:summary="@string/preference_appearance_status_text"
+                android:defaultValue="true" />
+                
+        <ListPreference
+                android:key="orientation"
+                android:title="@string/preference_appearance_orientation_title"    
+                android:summary="@string/preference_appearance_orientation_text"
+                android:entries="@array/orientation_titles"
+                android:entryValues="@array/orientation_values"
+                android:defaultValue="default" />
+                
+    </PreferenceCategory>
+
     <PreferenceCategory
             android:title="@string/info">
             

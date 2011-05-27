@@ -19,14 +19,17 @@
      with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="#7a7a7a">
-
-    <ImageView
-        android:id="@+id/TrommelydButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/trommebutton"
-        android:layout_centerInParent="true"
-        android:clickable="true" />
-
-</RelativeLayout>
+<resources>
+    <array name="orientation_titles">
+        <item>Default</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+        <item>Automatic</item>
+    </array>
+    <array name="orientation_values">
+        <item>default</item>
+        <item>portrait</item>
+        <item>landscape</item>
+        <item>automatic</item>
+    </array>
+</resources>
