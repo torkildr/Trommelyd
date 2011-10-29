@@ -63,7 +63,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sharedPref.getBoolean(TrommelydPreferences.PREF_STARTUP, false)) {
-            mBoundService.playSound();
+            playSound();
         }
     }
 
@@ -95,12 +95,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             mButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mBoundService == null) {
-                        Toast.makeText(getApplicationContext(), R.string.sound_error,
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        mBoundService.playSound();
-                    }
+                	playSound();
                 }
             });
         }
@@ -158,10 +153,11 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     protected void onStop() {
         super.onStop();
 
+        // Disable shake sensor before disconnect service
+        disableShakeSensor();
+
         // Removes binding to local service
         unbindService(this);
-        
-        disableShakeSensor();
     }
     
     // Fill options menu (when pressing the Menu button)
@@ -238,7 +234,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         mSensorListener.registerSensorChangeCallback(new Runnable() {
             @Override
             public void run() {
-                mBoundService.playSound();
+                playSound();
             }
         });
 
@@ -254,6 +250,16 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             mSensorListener.stopListener();
             mSensorListener.unregisterSensorChangeCallback();
             mSensorListener = null;
+        }
+    }
+    
+    // Play sounds "safely", that is without dangling services
+    private void playSound() {
+        if (mBoundService == null) {
+            Toast.makeText(getApplicationContext(), R.string.sound_error,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            mBoundService.playSound();
         }
     }
     
