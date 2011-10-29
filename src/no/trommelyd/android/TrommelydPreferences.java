@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 /**
  * Activity for saving preferences, also some info...
- * 
+ *
  * @author torkildr
  */
 public class TrommelydPreferences extends PreferenceActivity
@@ -47,32 +47,32 @@ public class TrommelydPreferences extends PreferenceActivity
     public static final String PREF_SENSITIVITY = "sensitivity";
     public static final String PREF_ORIENTATION = "orientation";
     public static final String PREF_STATUSBAR = "statusbar";
-    
+
     // Keep track of changes
     private boolean mIsChanged = false;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // Grab preferences and register the onChange listener
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefs.registerOnSharedPreferenceChangeListener(this);
 
         // Preferences
         addPreferencesFromResource(R.xml.preferences);
-        
+
         // Check to see if the shake ability should be enabled
         TrommelydSensorListener sensorListener = new TrommelydSensorListener(this);
-        
+
         if (!sensorListener.hasSensor()) {
             Preference shakePref = getPreferenceScreen().findPreference("shake");
-            
+
             if (shakePref != null) {
                 shakePref.setEnabled(false);
                 shakePref.setSummary(R.string.preference_shake_error);
             }
-            
+
             sharedPrefs.edit().putBoolean("shake", false).commit();
         }
 
@@ -83,12 +83,12 @@ public class TrommelydPreferences extends PreferenceActivity
             // Intent for preference, open web page
             intentPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
                     .setData(Uri.parse(getText(R.string.url).toString())));
-            
+
             // Version name
             String version = TrommelydHelper.getVersionNumber(this);
-            intentPref.setTitle(getString(R.string.app_name) + 
+            intentPref.setTitle(getString(R.string.app_name) +
                     ((version.length() > 0) ? " v" + version : ""));
-    
+
             // Number of plays
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             int count = sharedPref.getInt(PREF_COUNT, 0);
@@ -109,5 +109,5 @@ public class TrommelydPreferences extends PreferenceActivity
             Toast.makeText(this, R.string.preference_saved, Toast.LENGTH_SHORT).show();
         }
     }
-    
+
 }

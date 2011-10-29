@@ -36,7 +36,7 @@ import android.widget.Toast;
 /**
  * This service can be bound or triggered by pending intent. Holds and uses the
  * media player to play the sound.
- * 
+ *
  * @author torkildr
  */
 public class TrommelydPlayerService extends Service
@@ -44,19 +44,19 @@ public class TrommelydPlayerService extends Service
 
     private MediaPlayer mPlayer;
     private SharedPreferences mSharedPrefs;
-    
+
     // Service actions
     public static final String ACTION_PLAY = "play";
-    
+
     // Sound file
     private final int resource = R.raw.trommelyd;
-    
+
     // Pre-fetched preference variables
     private boolean mPlayMuted;
     private int mCount;
     private boolean mRepeat;
     private int mDelay;
-    
+
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
 
@@ -65,7 +65,7 @@ public class TrommelydPlayerService extends Service
             return TrommelydPlayerService.this;
         }
     }
-    
+
     // For some reason, we want to create the media player
     private synchronized boolean createMediaPlayer() {
         if (mPlayer != null) {
@@ -75,12 +75,12 @@ public class TrommelydPlayerService extends Service
         // Sometimes, MediaPlayer.create will fail, this is by no means a bullet-proof
         // solution, but it at least gives the player a chance to fix itself.
         int retries = 5;
-        
+
         do {
             // Create player and bind completion listener
             mPlayer = MediaPlayer.create(this, resource);
         } while (mPlayer == null && --retries > 0);
-        
+
         // Player not created (should this maybe be handled better?)
         if (mPlayer != null) {
             mPlayer.setOnCompletionListener(this);
@@ -108,11 +108,11 @@ public class TrommelydPlayerService extends Service
                 return;
             }
         }
-        
+
         // Either restart or start sound
         if (mPlayer.isPlaying()) {
             Log.d("Trommelyd", "Invoked: delay=" + mDelay + ", pos=" + mPlayer.getCurrentPosition());
-            
+
             // Sound is playing
             if (mRepeat) {
                 // No restart of sound
@@ -140,7 +140,7 @@ public class TrommelydPlayerService extends Service
     public void onCompletion(MediaPlayer player) {
         createMediaPlayer();
     }
-   
+
     // Service is created, prepare media player
     @Override
     public void onCreate() {
@@ -148,18 +148,18 @@ public class TrommelydPlayerService extends Service
         if (!createMediaPlayer()) {
             return;
         }
-        
+
         // Grab preferences and register the onChange listener
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
-        
+
         // Load preferences into pre-fetched variables
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_COUNT);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_MUTED);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_REPEAT);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_DELAY);
     }
-    
+
     // Service is destroyed, attempt to clean up...
     @Override
     public void onDestroy() {
@@ -183,24 +183,24 @@ public class TrommelydPlayerService extends Service
             playSound();
         }
     }
-    
+
     // Backwards compatibility for API < 5
     @Override
     public void onStart(Intent intent, int startId) {
         Log.d("Trommelyd", "Command (API < 5) from intent: " + intent.toURI());
         handleCommand(intent);
     }
-    
+
     // Used for API >= 5
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("Trommelyd", "Command from intent: " + intent.toURI());
         handleCommand(intent);
-        
+
         // Throw away when killed
         return Service.START_NOT_STICKY;
     }
-    
+
     // Give a simple binder for local calls
     @Override
     public IBinder onBind(Intent intent) {
@@ -221,6 +221,6 @@ public class TrommelydPlayerService extends Service
             mDelay = prefs.getInt(TrommelydPreferences.PREF_DELAY, 500);
         }
     }
-        
+
 }
 
