@@ -37,11 +37,11 @@ import android.widget.TextView;
 
 /**
  * Helper functions
- * 
+ *
  * @author torkildr
  */
 public class TrommelydHelper {
-    
+
     // Creates a AlertDialog filled with content from file
     public static AlertDialog getAlertDialogFromFile(Context context,
             int titleResource, int fileResource, boolean linkify) {
@@ -51,14 +51,14 @@ public class TrommelydHelper {
         // Inflate layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.custom_dialog, null);
-        
+
         // Set title and view
         builder.setTitle(titleResource);
         builder.setView(layout);
 
         // Grab text and linkify it
         SpannableString text = new SpannableString(readFile(context, fileResource));
-        
+
         if (linkify)
             Linkify.addLinks(text, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
 
@@ -76,12 +76,12 @@ public class TrommelydHelper {
 
         return builder.create();
     }
-    
+
     // Read file from resource id
     public static String readFile(Context context, int resource) {
         InputStream is = context.getResources().openRawResource(resource);
         BufferedReader br = new BufferedReader(new InputStreamReader(is), 1024);
-        
+
         StringBuffer content = new StringBuffer();
 
         try {
@@ -99,7 +99,7 @@ public class TrommelydHelper {
 
         return content.toString();
     }
-    
+
     // Get version number from manifest/package info
     public static String getVersionNumber(Context context) {
         try {

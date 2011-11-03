@@ -28,7 +28,7 @@ import android.widget.RemoteViews;
 
 /**
  * Widget provider, creates a pending intent to reroute the action to the service
- * 
+ *
  * @author torkildr
  */
 public class TrommelydWidgetProvider extends AppWidgetProvider {
@@ -51,8 +51,8 @@ public class TrommelydWidgetProvider extends AppWidgetProvider {
 
         // Tell button that clicks will fire up then pending intent
         mViews.setOnClickPendingIntent(R.id.TrommelydWidgetButton, mPendingPlayerIntent);
-        
+
         appWidgetManager.updateAppWidget(appWidgetIds, mViews);
     }
-    
+
 }

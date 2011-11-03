@@ -1,8 +1,8 @@
-/* The following code was written by Matthew Wiggins 
+/* The following code was written by Matthew Wiggins
  * and is released under the APACHE 2.0 license
- * 
+ *
  * Modified by Torkild Retvedt
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hlidskialf.android.preference;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class SeekBarPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
-    
+
     private static final String androidns = "http://schemas.android.com/apk/res/android";
 
     private SeekBar mSeekBar;
@@ -26,7 +26,7 @@ public class SeekBarPreference extends DialogPreference implements
     private Context mContext;
 
     private String mDialogMessage, mSuffix;
-    
+
     private int mDefault;
     private int mMin;
     private int mMax;
@@ -83,10 +83,10 @@ public class SeekBarPreference extends DialogPreference implements
 
         mSeekBar.setMax(mMax - mMin);
         mSeekBar.setProgress(mValue + mMin);
-        
+
         return layout;
     }
-    
+
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
