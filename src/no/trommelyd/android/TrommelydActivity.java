@@ -54,6 +54,10 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
     // Dialog boxes
     public static final int DIALOG_ABOUT = 1;
     public static final int DIALOG_FIRST_RUN = 2;
+    
+    // Indicates if externally called intent is already handled. Makes sure
+    // that sound is only played once when called from browser.
+    private boolean mLaunchPerformed = false;
 
     // Get service from binding
     @Override
@@ -61,7 +65,15 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         mBoundService = ((TrommelydPlayerService.TrommelydBinder) service).getService();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
+        
+        // If launched directly via the "View" action, make some noise!
+        if (getIntent().getAction().equals(Intent.ACTION_VIEW) && !mLaunchPerformed) {
+        	playSound();
+        	mLaunchPerformed = true;
+        	return;
+        }
+        
+        // User wants sound on startup
         if (sharedPref.getBoolean(TrommelydPreferences.PREF_STARTUP, false)) {
             playSound();
         }

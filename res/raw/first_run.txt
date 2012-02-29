@@ -1,3 +1,4 @@
 For the full experience, you should try adding the widget to the home screen; this way, you'll save precious time when you need it the most!
+If you intend to use this widget, you should probably not move the app to the SD card, but hey, your choice!
 
 You can also fine tune application behavior from the preferences, making the experience, if possible, even better!
