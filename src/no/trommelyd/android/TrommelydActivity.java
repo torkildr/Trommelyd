@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -94,7 +93,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Volume control should adjust media volume
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        setVolumeControlStream(TrommelydPreferences.STREAM);
 
         // Load main layout
         setContentView(R.layout.main);

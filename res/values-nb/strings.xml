@@ -49,6 +49,11 @@
     <string name="preference_muted_title">Avspilling i stillemodus</string>
     <string name="preference_muted_text">Avspill lyd når enheten er satt lydløs eller på vibrering</string>
     
+    <string name="preference_volumeOverride_title">Overstyr lydnivå</string>
+    <string name="preference_volumeOverride_text">Spill av "Trommelyd"-lyden med fast lydnivå</string>
+    <string name="preference_volume_title">Lydnivå</string>
+    <string name="preference_volume_text">Overstyr lydnivå</string>
+
     <string name="preference_shake_title">Rist løs!</string>
     <string name="preference_shake_text">Rist enheten for avspilling</string>
     <string name="preference_shake_error">Denne enheten støtter desverre ikke risting</string>    

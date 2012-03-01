@@ -12,9 +12,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.media.AudioManager;
 
 /*
  *    This file is part of Trommelyd for Android.
@@ -109,5 +111,24 @@ public class TrommelydHelper {
             return "";
         }
     }
+    
+    // Gets current volume, in percent
+    public static float getVolume(Context context) {
+    	AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    	int volume = audioManager.getStreamVolume(TrommelydPreferences.STREAM);
+    	int max = audioManager.getStreamMaxVolume(TrommelydPreferences.STREAM);
+    	
+    	return (volume / (float) max) * 100;
+    }
 
+    // Sets volume, in percent
+    public static void setVolume(Context context, float percent) {
+    	AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+    	int max = audioManager.getStreamMaxVolume(TrommelydPreferences.STREAM);
+    	int volume = Math.round(max * (percent / 100));
+    	
+        Log.d("Trommelyd", "Setting volume to: " + volume);
+		audioManager.setStreamVolume(TrommelydPreferences.STREAM, volume, 0);
+    }
 }

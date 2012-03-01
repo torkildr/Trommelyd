@@ -56,6 +56,9 @@ public class TrommelydPlayerService extends Service
     private int mCount;
     private boolean mRepeat;
     private int mDelay;
+    private boolean mOverrideVolume;
+    private int mDrumVolume;
+    private float mVolume;
 
     // Binder for local service calls
     public final IBinder mBinder = new TrommelydBinder();
@@ -108,6 +111,12 @@ public class TrommelydPlayerService extends Service
                 return;
             }
         }
+        
+        // Check if we need to handle the volume
+        if (mOverrideVolume) {
+        	mVolume = TrommelydHelper.getVolume(this);
+        	TrommelydHelper.setVolume(this, mDrumVolume);
+        }
 
         // Either restart or start sound
         if (mPlayer.isPlaying()) {
@@ -130,7 +139,7 @@ public class TrommelydPlayerService extends Service
             // Start playing sound
             mPlayer.start();
         }
-
+        
         // Since we're still here, we've obviously played the sound, count it
         mSharedPrefs.edit().putInt(TrommelydPreferences.PREF_COUNT, mCount+1).commit();
     }
@@ -138,6 +147,11 @@ public class TrommelydPlayerService extends Service
     // Prepare next play when completed
     @Override
     public void onCompletion(MediaPlayer player) {
+        // Tune volume back?
+        if (mOverrideVolume) {
+        	TrommelydHelper.setVolume(this, mVolume);
+        }
+
         createMediaPlayer();
     }
 
@@ -158,6 +172,8 @@ public class TrommelydPlayerService extends Service
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_MUTED);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_REPEAT);
         onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_DELAY);
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_VOLUMEOVERRIDE);
+        onSharedPreferenceChanged(mSharedPrefs, TrommelydPreferences.PREF_VOLUME);
     }
 
     // Service is destroyed, attempt to clean up...
@@ -219,8 +235,11 @@ public class TrommelydPlayerService extends Service
             mRepeat = prefs.getBoolean(TrommelydPreferences.PREF_REPEAT, true);
         } else if (key.equals(TrommelydPreferences.PREF_DELAY)) {
             mDelay = prefs.getInt(TrommelydPreferences.PREF_DELAY, 500);
+        } else if (key.equals(TrommelydPreferences.PREF_VOLUMEOVERRIDE)) {
+            mOverrideVolume = prefs.getBoolean(TrommelydPreferences.PREF_VOLUMEOVERRIDE, false);
+        } else if (key.equals(TrommelydPreferences.PREF_VOLUME)) {
+            mDrumVolume = prefs.getInt(TrommelydPreferences.PREF_VOLUME, 75);
         }
     }
 
 }
-

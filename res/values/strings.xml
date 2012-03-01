@@ -48,6 +48,11 @@
     
     <string name="preference_muted_title">Play when muted</string>
     <string name="preference_muted_text">Play sound when device is in muted or vibrate mode</string>
+
+    <string name="preference_volumeOverride_title">Override volume</string>
+    <string name="preference_volumeOverride_text">Plays the "Drumsound" at a predefined volume</string>
+    <string name="preference_volume_title">Volume</string>
+    <string name="preference_volume_text">Overridden volume</string>
     
     <string name="preference_shake_title">Shake it!</string>
     <string name="preference_shake_text">Shake to play sound</string>

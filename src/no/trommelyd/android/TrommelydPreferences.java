@@ -3,6 +3,7 @@ package no.trommelyd.android;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -47,6 +48,10 @@ public class TrommelydPreferences extends PreferenceActivity
     public static final String PREF_SENSITIVITY = "sensitivity";
     public static final String PREF_ORIENTATION = "orientation";
     public static final String PREF_STATUSBAR = "statusbar";
+    public static final String PREF_VOLUMEOVERRIDE = "volumeOverride";
+    public static final String PREF_VOLUME = "volume";
+    
+    public static final int STREAM = AudioManager.STREAM_MUSIC;
 
     // Keep track of changes
     private boolean mIsChanged = false;
@@ -99,6 +104,10 @@ public class TrommelydPreferences extends PreferenceActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         mIsChanged = true;
+        
+        if (key.equals("volume")) {
+        	// Test sound here?
+        }
     }
 
     @Override
