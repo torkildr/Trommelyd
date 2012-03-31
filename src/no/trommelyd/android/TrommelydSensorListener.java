@@ -19,12 +19,12 @@ public class TrommelydSensorListener implements SensorEventListener {
     // Sensitivity, typically set by user (set to infinite, so things don't go crazy by default)
     private double mSensitivity = Double.POSITIVE_INFINITY;
 
-    // Delta gravity
+    // Delta acceleration
     private float mAcceleration = 0.0f;
-    // Current gravity
-    private float mCurrentGravity = SensorManager.GRAVITY_EARTH;
-    // Last known gravity
-    private float mLastGravity = SensorManager.GRAVITY_EARTH;
+    // Current acceleration
+    private float mCurrentAcceleration = SensorManager.GRAVITY_EARTH;
+    // Last known acceleration
+    private float mLastAcceleration = SensorManager.GRAVITY_EARTH;
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -33,19 +33,19 @@ public class TrommelydSensorListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Gravitation in all directions
+        // Acceleration in all directions
         float x = event.values[SensorManager.DATA_X];
         float y = event.values[SensorManager.DATA_Y];
         float z = event.values[SensorManager.DATA_Z];
 
-        // Store last gravity
-        mLastGravity = mCurrentGravity;
+        // Store last acceleration
+        mLastAcceleration = mCurrentAcceleration;
 
-        // Calculate current gravity
-        mCurrentGravity = (float) Math.sqrt(x*x + y*y + z*z);
+        // Calculate current acceleration
+        mCurrentAcceleration = (float) Math.sqrt(x*x + y*y + z*z);
 
-        // Changed since last known gravity
-        float delta = mCurrentGravity - mLastGravity;
+        // Changed since last known acceleration
+        float delta = mCurrentAcceleration - mLastAcceleration;
 
         // Smooth the changes
         mAcceleration = (mAcceleration * 0.9f) + delta;
