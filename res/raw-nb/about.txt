@@ -1,0 +1,12 @@
+Utviklet av Torkild Retvedt
+
+Denne programvaren er lisensiert under lisensen GPLv3.
+
+"Trommelyd"-lyden er laget av Simon Lacelle, og er lisensiert under Creative
+Commons Sampling Plus 1.0.
+
+Informasjon om hvordan du kan få lastet ned kildekode finner du på:
+http://markild.no/category/trommelyd
+
+For spørsmål eller for å rapportere problemer, venligst send en epost til:
+kontakt@trommelyd.no
