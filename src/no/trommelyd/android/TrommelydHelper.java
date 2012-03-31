@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -44,6 +45,9 @@ import android.media.AudioManager;
  */
 public class TrommelydHelper {
 
+	public static final Charset UTF8 = Charset.forName("UTF-8");
+	public static final Charset LATIN1 = Charset.forName("iso8859-1");
+	
     // Creates a AlertDialog filled with content from file
     public static AlertDialog getAlertDialogFromFile(Context context,
             int titleResource, int fileResource, boolean linkify) {
@@ -82,7 +86,7 @@ public class TrommelydHelper {
     // Read file from resource id
     public static String readFile(Context context, int resource) {
         InputStream is = context.getResources().openRawResource(resource);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is), 1024);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, TrommelydHelper.LATIN1), 1024);
 
         StringBuffer content = new StringBuffer();
 
