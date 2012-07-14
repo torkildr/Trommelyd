@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -49,10 +50,9 @@ public class TrommelydHelper {
 	public static final Charset LATIN1 = Charset.forName("iso8859-1");
 	
     // Creates a AlertDialog filled with content from file
-    public static AlertDialog getAlertDialogFromFile(Context context,
-            int titleResource, int fileResource, boolean linkify) {
+    public static AlertDialog getAlertDialogFromFile(Context context, int titleResource, int fileResource, boolean linkify) {
         // Use alert dialog, because we can do a bunch of stuff with it
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.DrumsoundTheme));
 
         // Inflate layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

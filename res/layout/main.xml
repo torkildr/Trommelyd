@@ -18,15 +18,25 @@
      You should have received a copy of the GNU General Public License along
      with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
 -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:background="#7a7a7a">
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#ffffff" >
+
     <ImageView
         android:id="@+id/TrommelydButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/trommebutton"
         android:layout_centerInParent="true"
-        android:clickable="true" />
+        android:clickable="true"
+        android:src="@drawable/snare_1" android:contentDescription="@string/snare_drum"/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="17dp"
+        android:text="Button" />
 
 </RelativeLayout>

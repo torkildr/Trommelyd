@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="DrumsoundTheme" parent="@android:style/Theme.Black.NoTitleBar">
+<resources>
+    <style name="DrumsoundTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:textColor">#FFF</item>
     </style>
 </resources>
