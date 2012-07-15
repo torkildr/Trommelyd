@@ -110,15 +110,6 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
                 }
             });
         }
-        
-        View mPreferencesButton = findViewById(R.id.button1);
-        mPreferencesButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), TrommelydPreferences.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

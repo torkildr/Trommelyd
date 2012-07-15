@@ -3,6 +3,5 @@
     <style name="DrumsoundTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 </resources>

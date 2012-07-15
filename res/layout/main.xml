@@ -27,16 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:clickable="true"
-        android:src="@drawable/snare_1" android:contentDescription="@string/snare_drum"/>
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="11dp"
-        android:layout_marginTop="17dp"
-        android:text="Button" />
+        android:src="@drawable/snare_big" android:contentDescription="@string/snare_drum"/>
 
 </RelativeLayout>
