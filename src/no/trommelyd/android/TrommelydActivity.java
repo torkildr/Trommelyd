@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 /*
@@ -153,7 +155,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         }
 
         // Show this on "first" run
-        if (true || sharedPref.getBoolean(TrommelydPreferences.PREF_FIRST, true)) {
+        if (sharedPref.getBoolean(TrommelydPreferences.PREF_FIRST, true)) {
             showDialog(DIALOG_FIRST_RUN);
             sharedPref.edit().putBoolean(TrommelydPreferences.PREF_FIRST, false).commit();
         }
@@ -270,9 +272,22 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             Toast.makeText(getApplicationContext(), R.string.sound_error,
                     Toast.LENGTH_SHORT).show();
         } else {
+        	animateButton();
             mBoundService.playSound();
         }
     }
+
+	private void animateButton() {
+        View topStick = findViewById(R.id.StickTop);
+        View bottomStick = findViewById(R.id.StickBottom);
+
+        if (topStick != null && bottomStick != null) {
+        	Animation animation = AnimationUtils.loadAnimation(this, R.anim.stick);
+
+        	topStick.startAnimation(animation);
+        	bottomStick.startAnimation(animation);
+        }
+	}
 
     // Create the different kinds of dialogs
     @Override

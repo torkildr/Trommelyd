@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.FloatMath;
 import android.util.Log;
 
 public class TrommelydSensorListener implements SensorEventListener {
@@ -42,7 +43,7 @@ public class TrommelydSensorListener implements SensorEventListener {
         mLastAcceleration = mCurrentAcceleration;
 
         // Calculate current acceleration
-        mCurrentAcceleration = (float) Math.sqrt(x*x + y*y + z*z);
+        mCurrentAcceleration = (float) FloatMath.sqrt(x*x + y*y + z*z);
 
         // Changed since last known acceleration
         float delta = mCurrentAcceleration - mLastAcceleration;
