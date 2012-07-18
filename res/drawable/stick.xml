@@ -19,16 +19,19 @@
      with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/decelerate_interpolator"
-    android:shareInterpolator="true">
-	
-	<rotate
-	    android:fromDegrees="0"
-        android:toDegrees="-10"
-        android:toYScale="0.0"
-        android:pivotX="96%"
-        android:pivotY="91%"
-        android:duration="50" />
-	
-</set>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+         android:state_focused="true"
+         android:state_pressed="true"
+         android:drawable="@drawable/stick_down" />
+    <item
+         android:state_focused="false"
+         android:state_pressed="true"
+         android:drawable="@drawable/stick_down" />
+    <item
+         android:state_focused="true"
+         android:state_pressed="false"
+         android:drawable="@drawable/stick_up" />
+    <item
+         android:drawable="@drawable/stick_up" />
+</selector>

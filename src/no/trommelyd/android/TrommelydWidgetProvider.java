@@ -50,7 +50,7 @@ public class TrommelydWidgetProvider extends AppWidgetProvider {
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Tell button that clicks will fire up then pending intent
-        mViews.setOnClickPendingIntent(R.id.TrommelydButton, mPendingPlayerIntent);
+        mViews.setOnClickPendingIntent(R.id.stick, mPendingPlayerIntent);
         
         appWidgetManager.updateAppWidget(appWidgetIds, mViews);
     }

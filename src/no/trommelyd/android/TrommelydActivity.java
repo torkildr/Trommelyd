@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 /*
@@ -68,7 +66,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         
         // If launched directly via the "View" action, make some noise!
-        if (getIntent().getAction().equals(Intent.ACTION_VIEW) && !mLaunchPerformed) {
+        String action = getIntent().getAction();
+        
+        if (action != null && action.equals(Intent.ACTION_VIEW) && !mLaunchPerformed) {
         	playSound();
         	mLaunchPerformed = true;
         	return;
@@ -101,7 +101,7 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
         setContentView(R.layout.main);
 
         // Button to trigger event
-        View mButton = findViewById(R.id.TrommelydButton);
+        View mButton = findViewById(R.id.stick);
 
         // Tell the button to bother someone else when clicked.. (also, how to bother them)
         if (mButton != null) {
@@ -272,22 +272,9 @@ public class TrommelydActivity extends Activity implements ServiceConnection {
             Toast.makeText(getApplicationContext(), R.string.sound_error,
                     Toast.LENGTH_SHORT).show();
         } else {
-        	animateButton();
             mBoundService.playSound();
         }
     }
-
-	private void animateButton() {
-        View topStick = findViewById(R.id.StickTop);
-        View bottomStick = findViewById(R.id.StickBottom);
-
-        if (topStick != null && bottomStick != null) {
-        	Animation animation = AnimationUtils.loadAnimation(this, R.anim.stick);
-
-        	topStick.startAnimation(animation);
-        	bottomStick.startAnimation(animation);
-        }
-	}
 
     // Create the different kinds of dialogs
     @Override

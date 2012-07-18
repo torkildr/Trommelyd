@@ -1,71 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
-     This file is part of Trommelyd for Android.
-     Copyright (C) Torkild Retvedt
-     http://app.trommelyd.no/
- 
-     Trommelyd for Android is free software: you can redistribute it and/or
-     modify it under the terms of the GNU General Public License as published
-     by the Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
- 
-     Trommelyd for Android is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-     Public License for more details.
- 
-     You should have received a copy of the GNU General Public License along
-     with Trommelyd for Android. If not, see <http://www.gnu.org/licenses/>.
--->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/TrommelydButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:clickable="true"
-        android:contentDescription="@string/snare_drum"
-        android:scaleX="0.8"
-        android:scaleY="0.8"
-        android:src="@drawable/snare_only" />
+	<ImageView
+	    android:id="@+id/trommelyd_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:minHeight="100dp"
+	    android:minWidth="100dp"
+	    android:layout_centerInParent="true"
+	    android:contentDescription="@string/snare_drum"
+	    android:src="@drawable/snare_only"
+	    android:adjustViewBounds="true" />
 
     <ImageView
-        android:id="@+id/StickTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TrommelydButton"
-        android:layout_alignBottom="@+id/TrommelydButton"
-        android:layout_alignLeft="@+id/TrommelydButton"
-        android:layout_alignRight="@+id/TrommelydButton"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginRight="10dp"
+        android:id="@+id/stick"
         android:contentDescription="@string/stick"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:src="@drawable/stick_right" />
-
-    <ImageView
-        android:id="@+id/StickBottom"
+	    android:clickable="true"
+	    android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TrommelydButton"
-        android:layout_alignBottom="@+id/TrommelydButton"
-        android:layout_alignLeft="@+id/TrommelydButton"
-        android:layout_alignRight="@+id/TrommelydButton"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="40dp"
-        android:contentDescription="@string/stick"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:src="@drawable/stick_right" />
+        android:layout_alignTop="@id/trommelyd_button"
+        android:layout_alignBottom="@id/trommelyd_button"
+        android:layout_alignLeft="@id/trommelyd_button"
+        android:layout_alignRight="@id/trommelyd_button"
+        android:src="@drawable/stick"
+        android:adjustViewBounds="true" />
 
 </RelativeLayout>
