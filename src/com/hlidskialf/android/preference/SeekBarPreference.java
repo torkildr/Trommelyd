@@ -37,7 +37,7 @@ public class SeekBarPreference extends DialogPreference implements
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = new ContextThemeWrapper(context, R.style.DrumsoundTheme);
+        mContext = new ContextThemeWrapper(context, R.style.DrumsoundDialog);
 
         mDialogMessage = attrs.getAttributeValue(androidns, "dialogMessage");
         mSuffix = attrs.getAttributeValue(androidns, "text");

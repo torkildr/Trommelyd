@@ -10,9 +10,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -52,7 +49,7 @@ public class TrommelydHelper {
     // Creates a AlertDialog filled with content from file
     public static AlertDialog getAlertDialogFromFile(Context context, int titleResource, int fileResource, boolean linkify) {
         // Use alert dialog, because we can do a bunch of stuff with it
-    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.DrumsoundTheme));
+    	AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.DrumsoundDialog));
 
         // Inflate layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,16 +59,8 @@ public class TrommelydHelper {
         builder.setTitle(titleResource);
         builder.setView(layout);
 
-        // Grab text and linkify it
-        SpannableString text = new SpannableString(readFile(context, fileResource));
-
-        if (linkify)
-            Linkify.addLinks(text, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
-
-        // Place text and make it clickable
         TextView textView = (TextView) layout.findViewById(R.id.custom_dialog_text);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setText(text);
+        textView.setText(readFile(context, fileResource));
 
         // Button
         builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -103,7 +92,7 @@ public class TrommelydHelper {
             return "Oops..";
         }
 
-        // unix style new lines only
+        // Unix style new lines only
         return content.toString().replaceAll("\r", "");
     }
 

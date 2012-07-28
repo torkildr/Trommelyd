@@ -22,4 +22,6 @@
 <resources>
     <style name="DrumsoundTheme" parent="@android:style/Theme.Holo.Light">
     </style>
+    <style name="DrumsoundDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+    </style>
 </resources>
