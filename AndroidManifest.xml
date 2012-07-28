@@ -15,8 +15,8 @@
 	-->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="no.trommelyd.android" android:versionName="2.0"
-	android:installLocation="auto" android:versionCode="12">
+	package="no.trommelyd.android" android:versionName="2.1"
+	android:installLocation="auto" android:versionCode="13">
 
     <!-- Meta data -->
      
