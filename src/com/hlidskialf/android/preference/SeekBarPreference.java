@@ -7,9 +7,11 @@
  */
 package com.hlidskialf.android.preference;
 
+import no.trommelyd.android.R;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,7 +37,7 @@ public class SeekBarPreference extends DialogPreference implements
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        mContext = new ContextThemeWrapper(context, R.style.DrumsoundTheme);
 
         mDialogMessage = attrs.getAttributeValue(androidns, "dialogMessage");
         mSuffix = attrs.getAttributeValue(androidns, "text");

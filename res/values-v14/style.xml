@@ -21,7 +21,5 @@
 
 <resources>
     <style name="DrumsoundTheme" parent="@android:style/Theme.DeviceDefault.Light">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
     </style>
 </resources>

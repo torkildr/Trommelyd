@@ -64,7 +64,9 @@ public class TrommelydSensorListener implements SensorEventListener {
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         if (mSensorManager != null) {
-            Log.d("Trommelyd", "Sensor started: " + mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER));
+            for (Sensor sensor : mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER)) {
+                Log.d("Trommelyd", "Sensor found: " + sensor.getName());
+    		}
         }
     }
 

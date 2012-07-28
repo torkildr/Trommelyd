@@ -103,7 +103,8 @@ public class TrommelydHelper {
             return "Oops..";
         }
 
-        return content.toString();
+        // unix style new lines only
+        return content.toString().replaceAll("\r", "");
     }
 
     // Get version number from manifest/package info
