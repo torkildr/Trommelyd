@@ -35,9 +35,9 @@ public class TrommelydSensorListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Acceleration in all directions
-        float x = event.values[SensorManager.DATA_X];
-        float y = event.values[SensorManager.DATA_Y];
-        float z = event.values[SensorManager.DATA_Z];
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
 
         // Store last acceleration
         mLastAcceleration = mCurrentAcceleration;

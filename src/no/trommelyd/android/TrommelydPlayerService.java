@@ -203,14 +203,14 @@ public class TrommelydPlayerService extends Service
     // Backwards compatibility for API < 5
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.d("Trommelyd", "Command (API < 5) from intent: " + intent.toURI());
+        Log.d("Trommelyd", "Command (API < 5) from intent: " + intent.toUri(0));
         handleCommand(intent);
     }
 
     // Used for API >= 5
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("Trommelyd", "Command from intent: " + intent.toURI());
+        Log.d("Trommelyd", "Command from intent: " + intent.toUri(0));
         handleCommand(intent);
 
         // Throw away when killed
@@ -220,7 +220,7 @@ public class TrommelydPlayerService extends Service
     // Give a simple binder for local calls
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("Trommelyd", "Service bound from intent: " + intent.toURI());
+        Log.d("Trommelyd", "Service bound from intent: " + intent.toUri(0));
         return mBinder;
     }
 
